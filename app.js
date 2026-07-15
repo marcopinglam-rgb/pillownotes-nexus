@@ -896,9 +896,39 @@ function init(){
   renderBrainDump();
   if(state.appMode==="canvas")setTimeout(()=>{if(!localStorage.getItem("nexusOS_fitted")){fitCanvas();localStorage.setItem("nexusOS_fitted","1")}},100);
   maybeMorningPrompt();
-  // service worker for PWA / offline
-  if("serviceWorker" in navigator){
-    navigator.serviceWorker.register("./sw.js").catch(()=>{});
-  }
+  // service worker for PWA / offline — prefer fresh UI after deploy
+  setupServiceWorker();
+}
+
+function setupServiceWorker(){
+  if(!("serviceWorker" in navigator)) return;
+  let refreshing=false;
+  // When a new SW takes control, reload once so the new UI shows
+  navigator.serviceWorker.addEventListener("controllerchange",()=>{
+    if(refreshing) return;
+    refreshing=true;
+    location.reload();
+  });
+  navigator.serviceWorker.register("./sw.js",{updateViaCache:"none"}).then(reg=>{
+    const askWaiting=()=>{
+      if(reg.waiting) reg.waiting.postMessage({type:"SKIP_WAITING"});
+    };
+    askWaiting();
+    reg.addEventListener("updatefound",()=>{
+      const worker=reg.installing;
+      if(!worker) return;
+      worker.addEventListener("statechange",()=>{
+        if(worker.state==="installed" && navigator.serviceWorker.controller){
+          worker.postMessage({type:"SKIP_WAITING"});
+        }
+      });
+    });
+    // Check for updates on load + when app returns to foreground
+    const check=()=>{ try{ reg.update(); }catch(e){} };
+    check();
+    document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible") check(); });
+    window.addEventListener("focus",check);
+    setInterval(check, 5*60*1000);
+  }).catch(()=>{});
 }
 init();
