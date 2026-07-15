@@ -1,0 +1,20 @@
+{
+  "name": "PillowNotes — Brain Dump",
+  "short_name": "PillowNotes",
+  "description": "即時 Brain Dump + 睡眠節奏，幫香港都市人卸低認知負荷",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b0d10",
+  "theme_color": "#0b0d10",
+  "lang": "zh-Hant",
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

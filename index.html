@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no,maximum-scale=1">
+  <meta name="theme-color" content="#0b0d10" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="PillowNotes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no">
+  <title>PillowNotes</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icon.svg">
+  <link rel="apple-touch-icon" href="assets/icon.svg">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app" class="app-shell mode-braindump mobile-first" data-mobile-tab="dump">
+  <aside class="arcbar">
+    <div class="arc-top">
+      <button class="arc-logo" id="homeBtn" title="Brain Dump">N</button>
+      <div class="mode-switcher">
+        <button class="active" data-app-mode="braindump" title="Brain Dump">🛏</button>
+        <button data-app-mode="canvas" title="Canvas">◈</button>
+      </div>
+    </div>
+
+    <div class="arc-tools" id="canvasTools">
+      <button class="tool active" data-tool="select" title="Select (V)">↖</button>
+      <button class="tool" data-tool="hand" title="Hand (H)">✋</button>
+      <button class="tool" data-tool="note" title="Note (N)">▤</button>
+      <button class="tool" data-tool="shape" title="Card (S)">◻</button>
+      <button class="tool" data-tool="text" title="Text (T)">T</button>
+      <button class="tool" data-tool="connect" title="Connect (C)">↗</button>
+      <button class="tool" data-tool="frame" title="Frame (F)">▣</button>
+    </div>
+
+    <div class="arc-bottom">
+      <button id="layersBtn" title="Layers">☰</button>
+      <button id="historyBtn" title="History">↶</button>
+      <button id="commandBtn" title="Command">⌘</button>
+      <button id="aiBtn" title="AI">✦</button>
+      <button id="settingsBtn" title="Settings">⚙</button>
+    </div>
+  </aside>
+
+  <!-- ========== BRAIN DUMP (default home) ========== -->
+  <section id="brainDumpView" class="braindump-view">
+    <header class="bd-topbar">
+      <div class="bd-brand">
+        <span class="bd-pill live"><span class="dot"></span> PillowNotes</span>
+        <h1 id="bdGreeting">Brain Dump</h1>
+        <p id="bdSubtitle">卸低腦入面嘅嘢，先至瞓得着</p>
+      </div>
+      <div class="bd-top-actions">
+        <button id="bdToCanvas" class="ghost-btn desktop-only">開畫布</button>
+        <button id="bdSettingsQuick" class="ghost-btn icon-only" title="Settings">⚙</button>
+        <button id="installPwaBtn" class="ghost-btn" hidden>加到主畫面</button>
+      </div>
+    </header>
+
+    <div class="bd-grid">
+      <!-- Hero: Brain Dump -->
+      <article class="bd-card bd-hero" data-m-panel="dump">
+        <div class="bd-card-head">
+          <div>
+            <span class="eyebrow">PRIMARY · BRAIN DUMP</span>
+            <h2>Brain Dump</h2>
+            <p>即時倒出靈感、工作訊息、煩惱 — 唔使等到瞓前先處理</p>
+          </div>
+          <span class="bd-chip" id="dumpCountChip">0 則</span>
+        </div>
+        <textarea id="pillowDump" rows="5" placeholder="而家腦入面有咩？工作訊息、靈感、煩惱…直接寫低。"></textarea>
+        <div class="bd-actions sticky-actions">
+          <button class="primary-btn" id="savePillowDump">儲存</button>
+          <button class="wide-btn" id="dumpToTomorrow">聽日</button>
+          <button class="wide-btn" id="dumpToCanvas">→ 畫布</button>
+        </div>
+        <div class="dump-list" id="dumpList"></div>
+      </article>
+
+      <!-- Right column stack -->
+      <div class="bd-side" data-m-panel="sleep">
+        <!-- Checkpoints -->
+        <article class="bd-card" data-m-panel="sleep">
+          <div class="bd-card-head">
+            <div>
+              <span class="eyebrow">ONE-TAP</span>
+              <h2>Checkpoint</h2>
+            </div>
+          </div>
+          <div class="checkpoint-row">
+            <button class="primary-btn big" id="bedCheckpoint">🛏 開始瞓</button>
+            <button class="wide-btn big" id="wakeCheckpoint">☀ 起身</button>
+          </div>
+          <button class="ghost-btn full" id="stillAwakeBtn">仲未瞓着？Still Awake</button>
+          <div id="checkpointStatus" class="muted-line"></div>
+        </article>
+
+        <!-- Countdown 10-3-2-1-0 -->
+        <article class="bd-card" data-m-panel="wind">
+          <div class="bd-card-head">
+            <div>
+              <span class="eyebrow">WIND-DOWN</span>
+              <h2>10-3-2-1-0 倒數</h2>
+              <p>咖啡 / 飲食 / 工作 / 螢幕 / 瞓覺節奏</p>
+            </div>
+          </div>
+          <div class="countdown-btns" id="protocolBtns">
+            <button class="wide-btn" data-protocol="10">10h · 停咖啡</button>
+            <button class="wide-btn" data-protocol="3">3h · 停大餐</button>
+            <button class="wide-btn" data-protocol="2">2h · 收工</button>
+            <button class="wide-btn" data-protocol="1">1h · 熄螢幕</button>
+            <button class="wide-btn" data-protocol="0">0 · 瞓覺</button>
+          </div>
+          <div class="countdown-btns" style="margin-top:8px">
+            <button class="wide-btn" data-countdown="10">10 分</button>
+            <button class="wide-btn" data-countdown="30">30 分</button>
+            <button class="wide-btn" data-countdown="60">60 分</button>
+            <button class="primary-btn" id="flexCountdown">彈性倒數（OT）</button>
+          </div>
+          <div id="countdownDisplay" class="countdown-active"></div>
+        </article>
+      </div>
+
+      <!-- Sleep journal -->
+      <article class="bd-card" data-m-panel="sleep">
+        <div class="bd-card-head">
+          <div>
+            <span class="eyebrow">SLEEP JOURNAL</span>
+            <h2>睡眠日記</h2>
+          </div>
+          <button class="ghost-btn" id="showSleepStats">統計</button>
+        </div>
+        <div class="sleep-form">
+          <label>瞓覺時間<input type="time" id="sleepStart"></label>
+          <label>起身時間<input type="time" id="sleepEnd"></label>
+          <label>質素
+            <select id="sleepQuality">
+              <option value="3">好</option>
+              <option value="2">一般</option>
+              <option value="1">差</option>
+            </select>
+          </label>
+          <label class="full">備註（可事後編輯）
+            <input type="text" id="sleepNote" placeholder="例如：OT 到好夜 / 嘈 / 心事">
+          </label>
+        </div>
+        <div class="bd-actions">
+          <button class="primary-btn" id="saveSleepEntry">儲存紀錄</button>
+          <button class="wide-btn" id="editLastSleep">編輯最近一筆</button>
+        </div>
+        <div id="sleepStats" class="stats-box"></div>
+        <canvas id="sleepChart" width="640" height="140"></canvas>
+        <div class="sleep-list" id="sleepList"></div>
+      </article>
+
+      <!-- Cognitive reframe + morning review -->
+      <article class="bd-card" data-m-panel="more">
+        <div class="bd-card-head">
+          <div>
+            <span class="eyebrow">AI · MIND</span>
+            <h2>認知重構 · 晨間回顧</h2>
+          </div>
+        </div>
+        <label>而家最掛住嘅一句想法
+          <textarea id="reframeInput" rows="2" placeholder="例如：聽日個 meeting 一定會搞砸…"></textarea>
+        </label>
+        <div class="bd-actions">
+          <button class="primary-btn" id="runReframe">AI 重構</button>
+          <button class="wide-btn" id="morningReviewBtn">晨間回顧</button>
+          <button class="wide-btn" id="openAIFromBD">開 Nexus AI</button>
+        </div>
+        <div id="reframeOutput" class="reframe-box"></div>
+        <div id="morningReview" class="reframe-box"></div>
+      </article>
+
+      <!-- Recent activity + canvas bridge -->
+      <article class="bd-card bd-span" data-m-panel="more">
+        <div class="bd-card-head">
+          <div>
+            <span class="eyebrow">NEXUS BRIDGE</span>
+            <h2>同畫布同步</h2>
+            <p>Dump 會變成 Ideas 工作區節點；AI 可以幫你整理成計劃</p>
+          </div>
+          <button class="primary-btn" id="syncDumpsToCanvas">同步未轉畫布嘅 Dump</button>
+        </div>
+        <div class="bridge-stats" id="bridgeStats"></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ========== CANVAS MODE ========== -->
+  <header class="topbar" id="canvasTopbar">
+    <div class="crumbs">
+      <span class="dot live"></span>
+      <strong id="workspaceTitle">NEXUS / MAIN CANVAS</strong>
+      <span id="saveStatus">Saved</span>
+    </div>
+    <div class="top-center">
+      <div class="workspace-switcher horizontal">
+        <button class="active" data-workspace="main">Main</button>
+        <button data-workspace="ideas">Ideas</button>
+        <button data-workspace="research">Research</button>
+        <button data-workspace="pillow">Pillow</button>
+      </div>
+      <button id="undoBtn">↶</button>
+      <button id="redoBtn">↷</button>
+      <div class="zoom-control">
+        <button id="zoomOut">−</button>
+        <span id="zoomLabel">100%</span>
+        <button id="zoomIn">＋</button>
+      </div>
+      <button id="fitBtn">Fit</button>
+    </div>
+    <div class="top-right">
+      <button id="searchBtn">⌕</button>
+      <button id="shareBtn">Share</button>
+      <button id="backToBrainDump" class="primary-mini">Brain Dump</button>
+    </div>
+  </header>
+
+  <main class="workspace" id="canvasWorkspace">
+    <div id="canvasViewport" class="canvas-viewport">
+      <div id="canvasWorld" class="canvas-world">
+        <svg id="connectorLayer" class="connector-layer"></svg>
+        <div id="nodeLayer" class="node-layer"></div>
+        <div id="selectionBox" class="selection-box"></div>
+      </div>
+      <div class="canvas-hud">
+        <div class="hud-chip" id="toolHint">Select mode</div>
+        <div class="hud-chip" id="canvasCoords">0, 0</div>
+      </div>
+      <div class="minimap" id="minimap">
+        <canvas id="minimapCanvas" width="220" height="140"></canvas>
+        <div class="minimap-viewport" id="minimapViewport"></div>
+      </div>
+    </div>
+
+    <aside class="inspector" id="inspector">
+      <div class="inspector-empty" id="inspectorEmpty">
+        <span>✦</span>
+        <h3>Select something</h3>
+        <p>Everything on the canvas can be edited.</p>
+      </div>
+    </aside>
+
+    <aside class="ai-panel" id="aiPanel">
+      <div class="panel-head">
+        <div>
+          <span>AI AGENT</span>
+          <h2>Nexus Copilot</h2>
+        </div>
+        <button id="closeAI">×</button>
+      </div>
+      <div class="agent-mode">
+        <button class="active" data-agent-mode="organize">Organize</button>
+        <button data-agent-mode="brainstorm">Brainstorm</button>
+        <button data-agent-mode="summarize">Summarize</button>
+        <button data-agent-mode="plan">Plan</button>
+        <button data-agent-mode="sleep">Sleep</button>
+      </div>
+      <div class="ai-context" id="aiContext">
+        <span>CANVAS CONTEXT</span>
+        <strong id="aiContextCount">0 nodes selected</strong>
+        <p>Agent 可讀取畫布、Dump 同睡眠紀錄。</p>
+      </div>
+      <div class="ai-chat" id="aiChat"></div>
+      <div class="ai-suggestions">
+        <button data-ai-suggestion="ai.suggestOrganize">Organize this canvas</button>
+        <button data-ai-suggestion="ai.suggestPlan">Turn ideas into a plan</button>
+        <button data-ai-suggestion="ai.suggestSleep">Wind-down plan for tonight</button>
+      </div>
+      <div class="ai-compose">
+        <textarea id="aiInput" rows="2" placeholder="Ask Nexus to create, edit or organize…"></textarea>
+        <button id="sendAI">→</button>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Mobile bottom navigation -->
+  <nav class="mobile-tabbar" id="mobileTabbar" aria-label="Primary">
+    <button class="mtab active" data-mobile-tab="dump" type="button">
+      <span class="mtab-ico">💭</span><span class="mtab-label">Dump</span>
+    </button>
+    <button class="mtab" data-mobile-tab="sleep" type="button">
+      <span class="mtab-ico">😴</span><span class="mtab-label">睡眠</span>
+    </button>
+    <button class="mtab" data-mobile-tab="wind" type="button">
+      <span class="mtab-ico">⏱</span><span class="mtab-label">放鬆</span>
+    </button>
+    <button class="mtab" data-mobile-tab="canvas" type="button">
+      <span class="mtab-ico">◈</span><span class="mtab-label">畫布</span>
+    </button>
+    <button class="mtab" data-mobile-tab="more" type="button">
+      <span class="mtab-ico">⋯</span><span class="mtab-label">更多</span>
+    </button>
+  </nav>
+
+  <!-- Mobile canvas tool dock -->
+  <div class="mobile-canvas-dock" id="mobileCanvasDock" hidden>
+    <div class="mcd-tools">
+      <button class="tool active" data-tool="select" type="button">↖</button>
+      <button class="tool" data-tool="hand" type="button">✋</button>
+      <button class="tool" data-tool="note" type="button">▤</button>
+      <button class="tool" data-tool="shape" type="button">◻</button>
+      <button class="tool" data-tool="text" type="button">T</button>
+      <button class="tool" data-tool="connect" type="button">↗</button>
+    </div>
+    <div class="mcd-actions">
+      <button id="mAiBtn" type="button">✦</button>
+      <button id="mFitBtn" type="button">Fit</button>
+      <button id="mUndoBtn" type="button">↶</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Layers -->
+<div class="floating-panel layers-panel" id="layersPanel">
+  <div class="float-head"><strong>Layers</strong><button data-close-panel="layersPanel">×</button></div>
+  <input id="layerSearch" placeholder="Search layers…">
+  <div id="layersList"></div>
+</div>
+
+<!-- History -->
+<div class="floating-panel history-panel" id="historyPanel">
+  <div class="float-head"><strong>History</strong><button data-close-panel="historyPanel">×</button></div>
+  <div id="historyList"></div>
+</div>
+
+<!-- Command -->
+<div class="command-palette" id="commandPalette">
+  <input id="commandInput" placeholder="Type a command or search anything…">
+  <div id="commandResults"></div>
+</div>
+
+<!-- Context Menu -->
+<div class="context-menu" id="contextMenu">
+  <button data-context="edit">Edit</button>
+  <button data-context="duplicate">Duplicate</button>
+  <button data-context="bring-front">Bring to front</button>
+  <button data-context="send-back">Send to back</button>
+  <button data-context="group">Group selection</button>
+  <button data-context="connect">Connect from here</button>
+  <hr>
+  <button data-context="ai">Ask AI about this</button>
+  <button data-context="delete" class="danger">Delete</button>
+</div>
+
+<!-- Search -->
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-box">
+    <input id="globalSearch" placeholder="Search every node…">
+    <button data-close-overlay="searchOverlay">×</button>
+    <div id="searchResults"></div>
+  </div>
+</div>
+
+<!-- Share -->
+<div class="modal-backdrop" id="shareModal">
+  <div class="modal">
+    <button class="modal-close" data-close-modal="shareModal">×</button>
+    <span class="eyebrow">SHARE WORKSPACE</span>
+    <h2>Share or export</h2>
+    <button class="wide-btn" id="exportJSON">Export workspace JSON</button>
+    <button class="wide-btn" id="exportPNG">Export canvas PNG</button>
+    <button class="wide-btn" id="exportPillowJSON">Export PillowNotes data</button>
+    <button class="wide-btn" id="copyShareLink">Copy local share code</button>
+    <div class="share-code" id="shareCode"></div>
+  </div>
+</div>
+
+<!-- Settings -->
+<div class="modal-backdrop" id="settingsModal">
+  <div class="modal">
+    <button class="modal-close" data-close-modal="settingsModal">×</button>
+    <span class="eyebrow">SETTINGS</span>
+    <h2>Workspace preferences</h2>
+    <label><span>Language / 語言</span>
+      <select id="langSelect">
+        <option value="zh">繁體中文（粵語語氣）</option>
+        <option value="en">English</option>
+      </select>
+    </label>
+    <label><span>Default home</span>
+      <select id="defaultHomeSelect">
+        <option value="braindump">Brain Dump（PillowNotes）</option>
+        <option value="canvas">Canvas</option>
+      </select>
+    </label>
+    <label><span>Grid size</span><input id="gridSizeInput" type="number" min="8" max="80" value="24"></label>
+    <label class="switch-row"><span>Snap to grid</span><input id="snapToggle" type="checkbox" checked></label>
+    <label class="switch-row"><span>Show minimap</span><input id="minimapToggle" type="checkbox" checked></label>
+    <label class="switch-row"><span>Autosave</span><input id="autosaveToggle" type="checkbox" checked></label>
+    <label class="switch-row"><span>晨間回顧提示</span><input id="morningPromptToggle" type="checkbox" checked></label>
+    <button class="wide-btn" id="importWorkspaceBtn">Import workspace</button>
+    <input type="file" id="importWorkspaceFile" accept=".json" hidden>
+    <button class="wide-btn danger" id="resetWorkspaceBtn">Reset workspace</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
