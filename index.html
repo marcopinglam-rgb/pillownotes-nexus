@@ -72,7 +72,16 @@
           </div>
           <span class="bd-chip" id="dumpCountChip">0 則</span>
         </div>
-        <textarea id="pillowDump" rows="5" placeholder="而家腦入面有咩？工作訊息、靈感、煩惱…直接寫低。"></textarea>
+        <div class="dump-input-wrap">
+          <textarea id="pillowDump" rows="5" placeholder="而家腦入面有咩？工作訊息、靈感、煩惱…直接寫低。亦可撳 🎤 語音輸入。"></textarea>
+          <div class="dump-voice-bar">
+            <button type="button" class="voice-btn" id="voiceDumpBtn" aria-pressed="false" title="語音輸入">
+              <span class="voice-dot" aria-hidden="true"></span>
+              <span id="voiceDumpLabel">🎤 語音</span>
+            </button>
+            <span class="voice-status" id="voiceDumpStatus" hidden></span>
+          </div>
+        </div>
         <div class="tag-row" id="worryTags">
           <button type="button" class="tag" data-tag="工作">工作</button>
           <button type="button" class="tag" data-tag="人情">人情</button>

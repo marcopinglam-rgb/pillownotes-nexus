@@ -196,7 +196,8 @@ function load(){
       createdAt:d.createdAt||isoNow(),
       toCanvas:!!d.toCanvas,
       forTomorrow:!!d.forTomorrow,
-      nodeId:d.nodeId||null
+      nodeId:d.nodeId||null,
+      source:d.source||"text"
     }));
     s.pillownotes.sleepEntries=(s.pillownotes.sleepEntries||[]).map(e=>({
       id:e.id||uid(),
@@ -314,8 +315,10 @@ $$("#worryTags .tag").forEach(b=>b.onclick=()=>{
   else{activeTags.add(tag);b.classList.add("active")}
 });
 
-function addDump({text,toCanvas=false,forTomorrow=false}){
-  const item={id:uid(),text,tags:selectedTags(),createdAt:isoNow(),toCanvas:false,forTomorrow,nodeId:null};
+function addDump({text,toCanvas=false,forTomorrow=false,source="text"}){
+  const tags=selectedTags();
+  if(source==="voice" && !tags.includes("語音")) tags.push("語音");
+  const item={id:uid(),text,tags,createdAt:isoNow(),toCanvas:false,forTomorrow,nodeId:null,source};
   if(toCanvas){
     ensurePillowWs();
     const node=createNodeOn("pillow","note",900+Math.random()*120,700+state.pillownotes.dumps.length*40,{
@@ -337,18 +340,175 @@ function addDump({text,toCanvas=false,forTomorrow=false}){
 $("#savePillowDump").onclick=()=>{
   const v=$("#pillowDump").value.trim();
   if(!v)return toast(lang()==="zh"?"未有內容":"Nothing to save");
-  addDump({text:v});toast(t("toast.dumpSaved"));
+  addDump({text:v,source:voiceDumpUsed?"voice":"text"});
+  voiceDumpUsed=false;
+  toast(t("toast.dumpSaved"));
 };
 $("#dumpToCanvas").onclick=()=>{
   const v=$("#pillowDump").value.trim();
   if(!v)return toast(lang()==="zh"?"未有內容":"Nothing to create");
-  addDump({text:v,toCanvas:true});toast(t("toast.dumpCanvas"));
+  addDump({text:v,toCanvas:true,source:voiceDumpUsed?"voice":"text"});
+  voiceDumpUsed=false;
+  toast(t("toast.dumpCanvas"));
 };
 $("#dumpToTomorrow").onclick=()=>{
   const v=$("#pillowDump").value.trim();
   if(!v)return toast(lang()==="zh"?"未有內容":"Nothing to park");
-  addDump({text:v,forTomorrow:true});toast(t("toast.tomorrow"));
+  addDump({text:v,forTomorrow:true,source:voiceDumpUsed?"voice":"text"});
+  voiceDumpUsed=false;
+  toast(t("toast.tomorrow"));
 };
+
+/* ========== Voice dump — Web Speech API (方案 A) ========== */
+let voiceDumpUsed=false;
+let voiceRec=null;
+let voiceListening=false;
+let voiceBaseText="";
+let voiceFinalChunk="";
+
+function speechRecognitionCtor(){
+  return window.SpeechRecognition || window.webkitSpeechRecognition || null;
+}
+function preferredSpeechLang(){
+  if(lang()==="zh"){
+    // Prefer HK / Cantonese where the engine supports it
+    const nav=(navigator.language||"").toLowerCase();
+    if(nav.startsWith("yue")||nav.includes("hk")) return "zh-HK";
+    return "zh-HK";
+  }
+  return "en-US";
+}
+function setVoiceUi(state,msg){
+  const btn=$("#voiceDumpBtn");
+  const label=$("#voiceDumpLabel");
+  const status=$("#voiceDumpStatus");
+  if(!btn||!label||!status) return;
+  btn.classList.toggle("listening",state==="listening");
+  btn.setAttribute("aria-pressed",state==="listening"?"true":"false");
+  if(state==="listening"){
+    label.textContent=lang()==="zh"?"⏹ 停止":"⏹ Stop";
+    status.hidden=false;
+    status.className="voice-status live";
+    status.textContent=msg||(lang()==="zh"?"聽緊…直接講，完成後撳停止":"Listening… tap stop when done");
+  }else if(state==="unsupported"){
+    label.textContent=lang()==="zh"?"🎤 不支援":"🎤 N/A";
+    btn.classList.add("unsupported");
+    btn.disabled=true;
+    status.hidden=false;
+    status.className="voice-status err";
+    status.textContent=msg||(lang()==="zh"?"此瀏覽器不支援語音聽寫（建議 Chrome / Edge / Safari）":"Speech recognition not supported here");
+  }else if(state==="error"){
+    label.textContent=lang()==="zh"?"🎤 語音":"🎤 Voice";
+    status.hidden=false;
+    status.className="voice-status err";
+    status.textContent=msg||"";
+  }else if(state==="done"){
+    label.textContent=lang()==="zh"?"🎤 語音":"🎤 Voice";
+    status.hidden=false;
+    status.className="voice-status ok";
+    status.textContent=msg||(lang()==="zh"?"已轉成文字，可改完再儲存":"Transcribed — edit then save");
+  }else{
+    label.textContent=lang()==="zh"?"🎤 語音":"🎤 Voice";
+    if(msg){
+      status.hidden=false;
+      status.className="voice-status";
+      status.textContent=msg;
+    }else{
+      status.hidden=true;
+      status.textContent="";
+    }
+  }
+}
+function stopVoiceDump(){
+  // Keep voiceListening true until onend so UI settles on "done" if text arrived
+  try{ if(voiceRec) voiceRec.stop(); }catch(e){}
+}
+function startVoiceDump(){
+  const Ctor=speechRecognitionCtor();
+  if(!Ctor){
+    setVoiceUi("unsupported");
+    toast(lang()==="zh"?"此瀏覽器不支援語音聽寫":"Speech recognition not supported");
+    return;
+  }
+  const ta=$("#pillowDump");
+  if(!ta) return;
+  voiceBaseText=ta.value;
+  voiceFinalChunk="";
+  voiceRec=new Ctor();
+  voiceRec.lang=preferredSpeechLang();
+  voiceRec.continuous=true;
+  voiceRec.interimResults=true;
+  voiceRec.maxAlternatives=1;
+  voiceRec.onstart=()=>{
+    voiceListening=true;
+    setVoiceUi("listening");
+  };
+  voiceRec.onresult=(event)=>{
+    let interim="";
+    for(let i=event.resultIndex;i<event.results.length;i++){
+      const res=event.results[i];
+      const txt=res[0]?.transcript||"";
+      if(res.isFinal) voiceFinalChunk+=txt;
+      else interim+=txt;
+    }
+    const sep=voiceBaseText && !/\s$/.test(voiceBaseText)?" ":"";
+    ta.value=(voiceBaseText||"")+sep+voiceFinalChunk+(interim?interim:"");
+    // keep caret at end for live dictation feel
+    try{ ta.selectionStart=ta.selectionEnd=ta.value.length; }catch(e){}
+    voiceDumpUsed=true;
+    if(interim){
+      setVoiceUi("listening", lang()==="zh"?`聽緊… ${interim.slice(-24)}`:`Listening… ${interim.slice(-24)}`);
+    }
+  };
+  voiceRec.onerror=(event)=>{
+    voiceListening=false;
+    const code=event.error||"";
+    let msg=lang()==="zh"?"語音輸入失敗":"Voice input failed";
+    if(code==="not-allowed"||code==="service-not-allowed"){
+      msg=lang()==="zh"?"請允許咪高峰權限後再試":"Allow microphone permission and retry";
+    }else if(code==="no-speech"){
+      msg=lang()==="zh"?"聽唔到聲音，再試一次":"No speech detected — try again";
+    }else if(code==="network"){
+      msg=lang()==="zh"?"語音服務需要網絡連線":"Speech service needs network";
+    }else if(code==="aborted"){
+      setVoiceUi(voiceFinalChunk?"done":"idle");
+      return;
+    }
+    setVoiceUi("error",msg);
+    toast(msg);
+  };
+  voiceRec.onend=()=>{
+    const was=voiceListening;
+    voiceListening=false;
+    if(voiceFinalChunk.trim()||($("#pillowDump")?.value||"").trim()!==(voiceBaseText||"").trim()){
+      voiceDumpUsed=true;
+      setVoiceUi("done");
+    }else if(was){
+      setVoiceUi("idle", lang()==="zh"?"已停止":"Stopped");
+    }else{
+      setVoiceUi("idle");
+    }
+  };
+  try{
+    voiceRec.start();
+  }catch(e){
+    setVoiceUi("error", lang()==="zh"?"無法啟動語音輸入":"Could not start voice input");
+  }
+}
+function setupVoiceDump(){
+  const btn=$("#voiceDumpBtn");
+  if(!btn) return;
+  if(!speechRecognitionCtor()){
+    setVoiceUi("unsupported");
+    return;
+  }
+  setVoiceUi("idle");
+  btn.onclick=()=>{
+    if(voiceListening) stopVoiceDump();
+    else startVoiceDump();
+  };
+}
+setupVoiceDump();
 
 function ensurePillowWs(){
   if(!state.workspaces.pillow)state.workspaces.pillow={title:"NEXUS / PILLOW",nodes:[],connectors:[]};
@@ -594,6 +754,7 @@ function renderDumpList(){
       <span>${(d.tags||[]).map(t=>`#${t}`).join(" ")}</span>
       ${d.toCanvas?'<span class="bd-chip mini">canvas</span>':''}
       ${d.forTomorrow?'<span class="bd-chip mini">tomorrow</span>':''}
+      ${d.source==="voice"?'<span class="bd-chip mini">voice</span>':''}
     </div>
     <div class="dump-text">${escape(d.text)}</div>
     <div class="dump-item-actions">
