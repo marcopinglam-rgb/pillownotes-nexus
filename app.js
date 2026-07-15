@@ -227,7 +227,17 @@ function save(label="hist.change"){
     history=history.slice(0,50);future=[];renderHistory();
   }
 }
-function toast(msg){const x=$("#toast");x.textContent=msg;x.classList.add("show");clearTimeout(window.tt);window.tt=setTimeout(()=>x.classList.remove("show"),2400)}
+function toast(msg){
+  const x=$("#toast");
+  if(!x) return;
+  x.textContent=String(msg||"");
+  // force reflow so repeated toasts re-animate cleanly
+  x.classList.remove("show");
+  void x.offsetWidth;
+  x.classList.add("show");
+  clearTimeout(window.tt);
+  window.tt=setTimeout(()=>x.classList.remove("show"),2600);
+}
 function snap(v){return state.settings.snap?Math.round(v/state.settings.grid)*state.settings.grid:v}
 function screenToWorld(clientX,clientY){const r=viewport.getBoundingClientRect();return{x:(clientX-r.left-state.view.x)/state.view.zoom,y:(clientY-r.top-state.view.y)/state.view.zoom}}
 function applyView(){world.style.transform=`translate(${state.view.x}px,${state.view.y}px) scale(${state.view.zoom})`;$("#zoomLabel").textContent=Math.round(state.view.zoom*100)+"%";renderMinimap()}
