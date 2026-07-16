@@ -243,57 +243,56 @@ function setAppMode(mode, opts={}){
   const dock=$("#mobileCanvasDock");
   if(dock) dock.hidden = mode!=="canvas";
   if(mode==="canvas"){
-    if(!opts.skipTab) setMobileTab("canvas", {skipMode:true});
+    if(!opts.skipTab) goToPage("canvas", {skipMode:true, instant:true});
     render();
     setTimeout(fitCanvas,50);
   }else{
     if(!opts.skipTab){
       const tab = opts.tab || (state.mobileTab && state.mobileTab!=="canvas" ? state.mobileTab : "dump");
-      setMobileTab(tab, {skipMode:true});
+      goToPage(tab, {skipMode:true, instant:true});
     }
     renderBrainDump();
   }
   if(!opts.silent) save("hist.mode");
 }
 
-function setMobileTab(tab, opts={}){
-  state.mobileTab = tab;
-  const app=$("#app");
-  if(app) app.dataset.mobileTab = tab;
-  $$("[data-mobile-tab]").forEach(b=>{
-    if(b.classList.contains("mtab") || b.hasAttribute("data-mobile-tab")){
-      // only tabbar buttons
-    }
-  });
-  $$(".mtab").forEach(b=>b.classList.toggle("active", b.dataset.mobileTab===tab));
-  // sync header greeting context
+function goToPage(page, opts={}){
+  state.mobileTab = page;
+  const app=$("#app"); if(app) app.dataset.mobileTab = page;
+  // update page dots/tabs
+  $$(".pdot,.mtab").forEach(b=>b.classList.toggle("active", b.dataset.dot===page));
+  // scroll swipe container to page
+  const track=$("#pagesContainer");
+  if(track){
+    const target=track.querySelector(`[data-page="${page}"]`);
+    if(target) track.scrollTo({left:target.offsetLeft, behavior: opts.instant?"auto":"smooth"});
+  }
+  // sync header greeting
   const titles = {
-    dump: {zh:["Brain Dump","卸低腦入面嘅嘢，先至瞓得着"], en:["Brain Dump","Unload what's on your mind before sleep."]},
-    sleep: {zh:["睡眠","Checkpoint + 日記，一鍵跟蹤作息"], en:["Sleep","Checkpoints and journal in one place"]},
-    wind: {zh:["放鬆倒數","10-3-2-1-0 · 彈性 OT 倒數"], en:["Wind-down","10-3-2-1-0 and flexible OT countdown"]},
-    more: {zh:["更多","重構、晨間回顧、畫布同步"], en:["More","Reframe, morning review, canvas bridge"]},
-    canvas: {zh:["畫布","整理 Dump 成計劃"], en:["Canvas","Turn dumps into a plan"]}
+    dump: ["Brain Dump","卸低腦入面嘅嘢，先至瞓得着"],
+    sleep: ["睡眠","Checkpoint + 日記，一鍵跟蹤作息"],
+    wind: ["放鬆倒數","10-3-2-1-0 · 彈性 OT 倒數"],
+    more: ["更多","重構、晨間回顧、畫布同步"],
+    canvas: ["畫布","整理 Dump 成計劃"]
   };
-  const pack = (titles[tab]||titles.dump)[lang()==="zh"?"zh":"en"];
-  if($("#bdGreeting") && tab!=="canvas"){ $("#bdGreeting").textContent = pack[0]; $("#bdSubtitle").textContent = pack[1]; }
-  if(tab==="canvas"){
+  const pack = (titles[page]||titles.dump);
+  if($("#bdGreeting") && page!=="canvas"){ $("#bdGreeting").textContent = pack[0]; $("#bdSubtitle").textContent = pack[1]; }
+  if(page==="canvas"){
     if(!opts.skipMode) setAppMode("canvas", {skipTab:true, silent:!!opts.silent});
   }else{
-    if(!opts.skipMode && state.appMode!=="braindump") setAppMode("braindump", {skipTab:true, silent:!!opts.silent, tab});
-    // scroll panel into view top
-    const view=$("#brainDumpView"); if(view) view.scrollTop=0;
+    if(!opts.skipMode && state.appMode!=="braindump") setAppMode("braindump", {skipTab:true, silent:!!opts.silent});
   }
-  if(!opts.silent){
-    try{ localStorage.setItem("nexusMobileTab", tab) }catch(e){}
-  }
+  if(!opts.silent){ try{ localStorage.setItem("nexusMobileTab", page) }catch(e){} }
 }
 $$("[data-app-mode]").forEach(b=>b.onclick=()=>setAppMode(b.dataset.appMode));
-$("#homeBtn").onclick=()=>setMobileTab("dump");
-if($("#bdToCanvas")) $("#bdToCanvas").onclick=()=>setMobileTab("canvas");
-if($("#backToBrainDump")) $("#backToBrainDump").onclick=()=>setMobileTab("dump");
+$("#homeBtn").onclick=()=>goToPage("dump");
+if($("#bdToCanvas")) $("#bdToCanvas").onclick=()=>setAppMode("canvas");
+if($("#backToBrainDump")) $("#backToBrainDump").onclick=()=>goToPage("dump");
 if($("#bdSettingsQuick")) $("#bdSettingsQuick").onclick=()=>$("#settingsModal").classList.add("open");
-$$(".mtab").forEach(b=>b.onclick=()=>setMobileTab(b.dataset.mobileTab));
+// page dot / tab click
+$$(".pdot,.mtab").forEach(b=>b.onclick=()=>goToPage(b.dataset.dot));
 // mobile canvas dock mirrors tools
+if($("#mDumpBtn")) $("#mDumpBtn").onclick=()=>setAppMode("braindump");
 if($("#mAiBtn")) $("#mAiBtn").onclick=()=>openAI();
 if($("#mFitBtn")) $("#mFitBtn").onclick=()=>fitCanvas();
 if($("#mUndoBtn")) $("#mUndoBtn").onclick=()=>undo();
@@ -306,6 +305,46 @@ if($("#installPwaBtn")) $("#installPwaBtn").onclick=async()=>{
 };
 
 /* ========== BRAIN DUMP / PILLOWNOTES ========== */
+
+// --- 3D Node Tree ---
+let nodeTreeNodes=[];
+function initNodeTree(){
+  const cnv=document.getElementById("nodeCanvas");
+  if(!cnv||typeof THREE==="undefined")return;
+  const p=cnv.parentElement,w=p.clientWidth,h=p.clientHeight;
+  const scene=new THREE.Scene();
+  const cam=new THREE.PerspectiveCamera(45,w/h,0.1,100);
+  cam.position.set(0,1.5,6);cam.lookAt(0,0,0);
+  const r=new THREE.WebGLRenderer({canvas:cnv,alpha:true,antialias:true});
+  r.setSize(w,h);r.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  scene.add(new THREE.AmbientLight(0x8b7cff,0.3));
+  const pl=new THREE.PointLight(0x8b7cff,1,15);pl.position.set(0,3,4);scene.add(pl);
+  const pts=[];
+  for(let i=0;i<=30;i++){const t=i/30,a=t*Math.PI*6,R=1.8*(1-t*0.5);pts.push(new THREE.Vector3(Math.cos(a)*R,-1.5+t*3,Math.sin(a)*R))}
+  const curve=new THREE.CatmullRomCurve3(pts);
+  const lg=new THREE.BufferGeometry().setFromPoints(curve.getPoints(120));
+  scene.add(new THREE.Line(lg,new THREE.LineBasicMaterial({color:0x8b7cff,transparent:true,opacity:0.25})));
+  window._ntScene=scene;window._ntCam=cam;window._ntRenderer=r;
+  state.pillownotes.dumps.forEach((d,i)=>addNodeToTree(d.text,i,scene));
+  function anim(){if(!window._ntScene)return;requestAnimationFrame(anim);
+    const t=performance.now()*0.001;
+    nodeTreeNodes.forEach((n,i)=>{const bp=n.userData.bp;
+      n.position.x=bp[0]+Math.sin(t+i*0.7)*0.05;n.position.y=bp[1]+Math.cos(t*0.8+i)*0.04;
+      n.scale.setScalar(1+Math.sin(t*2+i)*0.15)});
+    scene.rotation.y+=0.002;r.render(scene,cam)}
+  anim();
+}
+function addNodeToTree(text,idx,scene){
+  const s=scene||window._ntScene;if(!s)return;
+  const t=Math.min(idx/30,1),a=t*Math.PI*6,R=1.8*(1-t*0.5);
+  const pos=[Math.cos(a)*R,-1.5+t*3,Math.sin(a)*R];
+  const geo=new THREE.SphereGeometry(0.08,16,16);
+  const hue=0.7+Math.random()*0.15;
+  const mat=new THREE.MeshPhongMaterial({color:new THREE.Color().setHSL(hue,0.8,0.6),emissive:new THREE.Color().setHSL(hue,0.6,0.2),shininess:100});
+  const sp=new THREE.Mesh(geo,mat);sp.position.set(...pos);
+  sp.userData={bp:[...pos],text:text.slice(0,40)};s.add(sp);nodeTreeNodes.push(sp);
+}
+
 function addDump({text,toCanvas=false,forTomorrow=false}){
   const item={id:uid(),text,tags:[],createdAt:isoNow(),toCanvas:false,forTomorrow,nodeId:null};
   if(toCanvas){
@@ -319,6 +358,7 @@ function addDump({text,toCanvas=false,forTomorrow=false}){
   }
   state.pillownotes.dumps.unshift(item);
   if(forTomorrow)state.pillownotes.pendingTomorrow.unshift({id:item.id,text,createdAt:item.createdAt});
+  addNodeToTree(text, state.pillownotes.dumps.length, window._ntScene);
   $("#pillowDump").value="";
   save("hist.pillow");
   renderBrainDump();
@@ -882,11 +922,45 @@ function init(){
   state.appMode = (tab==="canvas" || home==="canvas") ? "canvas" : "braindump";
   $$("[data-app-mode]").forEach(b=>b.classList.toggle("active",b.dataset.appMode===state.appMode));
   const dock=$("#mobileCanvasDock"); if(dock) dock.hidden = state.appMode!=="canvas";
-  setMobileTab(tab, {skipMode:true, silent:true});
+  goToPage(tab, {skipMode:true, silent:true, instant:true});
   render();
   renderBrainDump();
+  if(!window._ntInited){window._ntInited=true;setTimeout(initNodeTree,300);}
   if(state.appMode==="canvas")setTimeout(()=>{if(!localStorage.getItem("nexusOS_fitted")){fitCanvas();localStorage.setItem("nexusOS_fitted","1")}},100);
   maybeMorningPrompt();
+  // swipe detection
+  const pc=$("#pagesContainer");
+  if(pc){
+    let swipeStart=0;
+    pc.addEventListener("touchstart",e=>{swipeStart=e.touches[0].clientX},{passive:true});
+    pc.addEventListener("touchend",e=>{
+      const dx=e.changedTouches[0].clientX-swipeStart;
+      if(Math.abs(dx)<50)return;
+      const pages=["sleep","wind","dump","canvas","more"];
+      const idx=pages.indexOf(state.mobileTab);
+      if(dx<-40 && idx<pages.length-1) goToPage(pages[idx+1]);
+      if(dx>40 && idx>0) goToPage(pages[idx-1]);
+    });
+    // update active dot on scroll
+    let scrollTimer;
+    pc.addEventListener("scroll",()=>{
+      clearTimeout(scrollTimer);
+      scrollTimer=setTimeout(()=>{
+        const panels=$$(".page-panel");
+        const cx=pc.scrollLeft+pc.offsetWidth/2;
+        let best=null,bestDist=Infinity;
+        panels.forEach(p=>{
+          const d=Math.abs(p.offsetLeft+p.offsetWidth/2-cx);
+          if(d<bestDist){bestDist=d;best=p.dataset.page}
+        });
+        if(best && best!==state.mobileTab){
+          state.mobileTab=best;
+          $$(".pdot,.mtab").forEach(b=>b.classList.toggle("active",b.dataset.dot===best));
+          try{localStorage.setItem("nexusMobileTab",best)}catch(e){}
+        }
+      },100);
+    },{passive:true});
+  }
   // service worker for PWA / offline
   if("serviceWorker" in navigator){
     navigator.serviceWorker.register("./sw.js").catch(()=>{});

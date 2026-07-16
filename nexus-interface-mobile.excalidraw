@@ -1,0 +1,58 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "hermes-agent",
+  "elements": [
+    {"type":"text","id":"t_title","x":20,"y":10,"width":500,"height":30,"text":"NEXUS PillowNotes — Mobile Interface Layout (5 Swipe Pages)","fontSize":20,"fontFamily":1,"strokeColor":"#1e1e1e","originalText":"NEXUS PillowNotes — Mobile Interface Layout (5 Swipe Pages)","autoResize":true},
+
+    {"type":"text","id":"t_label_swipe","x":20,"y":50,"width":300,"height":18,"text":"← swipe left/right →    Page dots:  ● ● ● ● ●    (Dump = center/home)","fontSize":14,"fontFamily":1,"strokeColor":"#757575","originalText":"← swipe left/right →    Page dots:  ● ● ● ● ●    (Dump = center/home)","autoResize":true},
+
+    {"type":"text","id":"t_p0","x":42,"y":85,"width":140,"height":20,"text":"PAGE 0: DUMP","fontSize":20,"fontFamily":1,"strokeColor":"#1e1e1e","originalText":"PAGE 0: DUMP","autoResize":true},
+
+    {"type":"rectangle","id":"r_header0","x":20,"y":115,"width":300,"height":35,"roundness":{"type":3},"backgroundColor":"#e9ecef","fillStyle":"solid","strokeColor":"#1e1e1e","boundElements":[{"id":"t_r_header0","type":"text"}]},
+    {"type":"text","id":"t_r_header0","x":60,"y":122,"width":220,"height":20,"text":"Header: PillowNotes · Brain Dump","fontSize":16,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"r_header0","originalText":"Header: PillowNotes · Brain Dump","autoResize":true},
+
+    {"type":"rectangle","id":"r_textarea","x":20,"y":160,"width":300,"height":300,"roundness":{"type":3},"backgroundColor":"#a5d8ff","fillStyle":"solid","strokeColor":"#1e1e1e","boundElements":[{"id":"t_r_textarea","type":"text"}]},
+    {"type":"text","id":"t_r_textarea","x":40,"y":280,"width":260,"height":50,"text":"Textarea\n(flex:1 — fills to buttons)\nplaceholder: 而家腦入面有咩？","fontSize":16,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"r_textarea","originalText":"Textarea\n(flex:1 — fills to buttons)\nplaceholder: 而家腦入面有咩？","autoResize":true},
+
+    {"type":"rectangle","id":"r_btns0","x":20,"y":470,"width":300,"height":40,"roundness":{"type":3},"backgroundColor":"#d0bfff","fillStyle":"solid","strokeColor":"#1e1e1e","boundElements":[{"id":"t_r_btns0","type":"text"}]},
+    {"type":"text","id":"t_r_btns0","x":50,"y":480,"width":240,"height":20,"text":"[儲存]  [聽日]  [→畫布]","fontSize":16,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"r_btns0","originalText":"[儲存]  [聽日]  [→畫布]","autoResize":true},
+
+    {"type":"rectangle","id":"r_dumps","x":20,"y":520,"width":300,"height":80,"roundness":{"type":3},"backgroundColor":"#f1f3f5","fillStyle":"solid","strokeColor":"#868e96","strokeStyle":"dashed","boundElements":[{"id":"t_r_dumps","type":"text"}]},
+    {"type":"text","id":"t_r_dumps","x":40,"y":545,"width":260,"height":30,"text":"最近記錄  [0則]\n(dump list — scroll to see)","fontSize":16,"fontFamily":1,"strokeColor":"#868e96","textAlign":"center","verticalAlign":"middle","containerId":"r_dumps","originalText":"最近記錄  [0則]\n(dump list — scroll to see)","autoResize":true},
+
+    {"type":"rectangle","id":"r_dots0","x":105,"y":610,"width":130,"height":22,"roundness":{"type":3},"backgroundColor":"#fff3bf","fillStyle":"solid","strokeColor":"#1e1e1e","boundElements":[{"id":"t_r_dots0","type":"text"}]},
+    {"type":"text","id":"t_r_dots0","x":110,"y":614,"width":120,"height":14,"text":"● ○ ○ ○ ○","fontSize":14,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"r_dots0","originalText":"● ○ ○ ○ ○","autoResize":true},
+
+    {"type":"text","id":"t_p1","x":377,"y":85,"width":170,"height":20,"text":"PAGE 1: 放鬆","fontSize":20,"fontFamily":1,"strokeColor":"#1e1e1e","originalText":"PAGE 1: 放鬆","autoResize":true},
+
+    {"type":"rectangle","id":"r_wind1","x":355,"y":115,"width":300,"height":100,"roundness":{"type":3},"backgroundColor":"#fff3bf","fillStyle":"solid","strokeColor":"#1e1e1e","boundElements":[{"id":"t_r_wind1","type":"text"}]},
+    {"type":"text","id":"t_r_wind1","x":380,"y":140,"width":250,"height":50,"text":"ONE-TAP\n🛏 開始瞓  ☀ 起身\nStill Awake","fontSize":16,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"r_wind1","originalText":"ONE-TAP\n🛏 開始瞓  ☀ 起身\nStill Awake","autoResize":true},
+
+    {"type":"rectangle","id":"r_wind2","x":355,"y":225,"width":300,"height":140,"roundness":{"type":3},"backgroundColor":"#fff3bf","fillStyle":"solid","strokeColor":"#1e1e1e","boundElements":[{"id":"t_r_wind2","type":"text"}]},
+    {"type":"text","id":"t_r_wind2","x":380,"y":270,"width":250,"height":50,"text":"10-3-2-1-0 倒數\n10h 3h 2h 1h 0\n10分 30分 60分 彈性OT","fontSize":16,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"r_wind2","originalText":"10-3-2-1-0 倒數\n10h 3h 2h 1h 0\n10分 30分 60分 彈性OT","autoResize":true},
+
+    {"type":"text","id":"t_p2","x":712,"y":85,"width":170,"height":20,"text":"PAGE 2: 睡眠","fontSize":20,"fontFamily":1,"strokeColor":"#1e1e1e","originalText":"PAGE 2: 睡眠","autoResize":true},
+
+    {"type":"rectangle","id":"r_sleep","x":690,"y":115,"width":300,"height":220,"roundness":{"type":3},"backgroundColor":"#c3fae8","fillStyle":"solid","strokeColor":"#1e1e1e","boundElements":[{"id":"t_r_sleep","type":"text"}]},
+    {"type":"text","id":"t_r_sleep","x":715,"y":195,"width":250,"height":60,"text":"SLEEP JOURNAL\n瞓覺時間 / 起身時間\n質素 (好/一般/差)\n備註","fontSize":16,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"r_sleep","originalText":"SLEEP JOURNAL\n瞓覺時間 / 起身時間\n質素 (好/一般/差)\n備註","autoResize":true},
+
+    {"type":"text","id":"t_p3","x":1047,"y":85,"width":190,"height":20,"text":"PAGE 3: 畫布 Bridge","fontSize":20,"fontFamily":1,"strokeColor":"#1e1e1e","originalText":"PAGE 3: 畫布 Bridge","autoResize":true},
+
+    {"type":"rectangle","id":"r_bridge","x":1025,"y":115,"width":300,"height":100,"roundness":{"type":3},"backgroundColor":"#d0bfff","fillStyle":"solid","strokeColor":"#1e1e1e","boundElements":[{"id":"t_r_bridge","type":"text"}]},
+    {"type":"text","id":"t_r_bridge","x":1050,"y":140,"width":250,"height":50,"text":"NEXUS BRIDGE\n同畫布同步 [同步→畫布]\n(bridge stats)","fontSize":16,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"r_bridge","originalText":"NEXUS BRIDGE\n同畫布同步 [同步→畫布]\n(bridge stats)","autoResize":true},
+
+    {"type":"rectangle","id":"r_reframe","x":1025,"y":225,"width":300,"height":120,"roundness":{"type":3},"backgroundColor":"#ffd8a8","fillStyle":"solid","strokeColor":"#1e1e1e","boundElements":[{"id":"t_r_reframe","type":"text"}]},
+    {"type":"text","id":"t_r_reframe","x":1050,"y":260,"width":250,"height":50,"text":"AI · MIND\n認知重構·晨間回顧\n[AI重構] [晨間回顧] [開AI]","fontSize":16,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"r_reframe","originalText":"AI · MIND\n認知重構·晨間回顧\n[AI重構] [晨間回顧] [開AI]","autoResize":true},
+
+    {"type":"text","id":"t_p4","x":1382,"y":85,"width":170,"height":20,"text":"PAGE 4: 更多","fontSize":20,"fontFamily":1,"strokeColor":"#1e1e1e","originalText":"PAGE 4: 更多","autoResize":true},
+
+    {"type":"rectangle","id":"r_more","x":1360,"y":115,"width":300,"height":100,"roundness":{"type":3},"backgroundColor":"#f1f3f5","fillStyle":"solid","strokeColor":"#1e1e1e","boundElements":[{"id":"t_r_more","type":"text"}]},
+    {"type":"text","id":"t_r_more","x":1395,"y":150,"width":230,"height":30,"text":"更多功能即將推出\n(placeholder)","fontSize":16,"fontFamily":1,"strokeColor":"#868e96","textAlign":"center","verticalAlign":"middle","containerId":"r_more","originalText":"更多功能即將推出\n(placeholder)","autoResize":true},
+
+    {"type":"text","id":"t_legend","x":20,"y":650,"width":500,"height":16,"text":"Color legend:  Blue=Input/Textarea  Purple=Buttons  Yellow=Wind-down/Checkpoints  Green=Sleep  Orange=AI","fontSize":14,"fontFamily":1,"strokeColor":"#757575","originalText":"Color legend:  Blue=Input/Textarea  Purple=Buttons  Yellow=Wind-down/Checkpoints  Green=Sleep  Orange=AI","autoResize":true}
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff"
+  }
+}
