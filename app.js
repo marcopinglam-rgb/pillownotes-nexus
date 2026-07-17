@@ -1135,8 +1135,9 @@ function insertKeyword(tagText) {
   inputBox.selectionStart = inputBox.selectionEnd = start + tagText.length;
   inputBox.focus();
 }
-const searchBox = document.getElementById('commandInput');
-if (searchBox) {
+document.addEventListener('DOMContentLoaded', () => {
+  const searchBox = document.getElementById('commandInput');
+  if (!searchBox) return;
   searchBox.addEventListener('paste', function (e) {
     const items = e.clipboardData.items;
     for (let i = 0; i < items.length; i++) {
@@ -1152,5 +1153,5 @@ if (searchBox) {
         break;
       }
     }
-  })
-}
+  });
+});
