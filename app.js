@@ -1135,3 +1135,22 @@ function insertKeyword(tagText) {
   inputBox.selectionStart = inputBox.selectionEnd = start + tagText.length;
   inputBox.focus();
 }
+const searchBox = document.getElementById('commandInput');
+if (searchBox) {
+  searchBox.addEventListener('paste', function (e) {
+    const items = e.clipboardData.items;
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.type.startsWith('image/')) {
+        e.preventDefault();
+        const file = item.getAsFile();
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          searchBox.value += `\n![图片](${ev.target.result})\n`;
+        };
+        reader.readAsDataURL(file);
+        break;
+      }
+    }
+  })
+}
