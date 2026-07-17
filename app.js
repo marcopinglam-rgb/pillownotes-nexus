@@ -1155,3 +1155,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+// 主笔记输入框粘贴图片
+document.addEventListener('DOMContentLoaded', () => {
+  const mainInput = document.getElementById('pillowDump');
+  if (!mainInput) return;
+  mainInput.addEventListener('paste', function(e){
+    const items = e.clipboardData.items;
+    for(let i=0; i<items.length; i++){
+      if(items[i].type.startsWith('image/')){
+        e.preventDefault();
+        const file = items[i].getAsFile();
+        const reader = new FileReader();
+        reader.onload = ev => {
+          mainInput.value += `\n![图片](${ev.target.result})\n`;
+        }
+        reader.readAsDataURL(file);
+        break;
+      }
+    }
+  });
+});
