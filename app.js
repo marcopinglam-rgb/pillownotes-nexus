@@ -1175,3 +1175,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+document.addEventListener('DOMContentLoaded', () => {
+  const editor = document.getElementById('pillowDump');
+  const preview = document.getElementById('previewBox');
+  if (!editor || !preview) return;
+  editor.oninput = () => {
+    preview.innerHTML = marked.parse(editor.value);
+  }
+});
