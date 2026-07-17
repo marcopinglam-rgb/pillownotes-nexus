@@ -1103,3 +1103,35 @@ function setupServiceWorker(){
   }).catch(()=>{});
 }
 init();
+// Append at the bottom of app.js
+
+// Capitalize selection within any focused, editable element
+function capitalizeSelectedText() {
+  const selection = window.getSelection();
+  if (!selection.toString()) return;
+  
+  const range = selection.getRangeAt(0);
+  const capitalizedText = selection.toString().toUpperCase();
+  
+  range.deleteContents();
+  range.insertNode(document.createTextNode(capitalizedText));
+}
+
+// Quick trigger helper for mobile: Capitalize all text in the active input
+function capitalizeActiveInput() {
+  const activeEl = document.activeElement;
+  if (activeEl && (activeEl.tagName === 'TEXTAREA' || activeEl.tagName === 'INPUT')) {
+    activeEl.value = activeEl.value.toUpperCase();
+  } else if (activeEl && activeEl.hasAttribute('contenteditable')) {
+    activeEl.innerText = activeEl.innerText.toUpperCase();
+  }
+}
+function insertKeyword(tagText) {
+  const inputBox = document.getElementById('pillowDump');
+  const start = inputBox.selectionStart;
+  const end = inputBox.selectionEnd;
+  const originalText = inputBox.value;
+  inputBox.value = originalText.slice(0, start) + tagText + originalText.slice(end);
+  inputBox.selectionStart = inputBox.selectionEnd = start + tagText.length;
+  inputBox.focus();
+}
