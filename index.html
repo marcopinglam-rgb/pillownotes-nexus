@@ -73,6 +73,7 @@
           <span class="bd-chip" id="dumpCountChip">0 則</span>
         </div>
         <div class="dump-input-wrap">
+        <div class="dump-input-wrap">
           <textarea id="pillowDump" rows="5" placeholder="而家腦入面有咩？工作訊息、靈感、煩惱…直接寫低。亦可撳 🎤 語音輸入。"></textarea>
           <div class="dump-voice-bar">
             <button type="button" class="voice-btn" id="voiceDumpBtn" aria-pressed="false" title="語音輸入">
@@ -81,6 +82,14 @@
             </button>
             <span class="voice-status" id="voiceDumpStatus" hidden></span>
           </div>
+        </div>
+
+          <!-- INSERTED: Quick Keywords Bar -->
+        <div class="quick-tags-container">
+          <button type="button" class="quick-tag" onclick="insertKeyword('#idea')">#idea</button>
+          <button type="button" class="quick-tag" onclick="insertKeyword('#todo')">#todo</button>
+          <button type="button" class="quick-tag" onclick="insertKeyword('#sleep')">#sleep</button>
+          <button type="button" class="quick-tag" onclick="insertKeyword('#work')">#work</button>
         </div>
         <div class="tag-row" id="worryTags">
           <button type="button" class="tag" data-tag="工作">工作</button>
