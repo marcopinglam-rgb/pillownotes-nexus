@@ -1183,3 +1183,30 @@ document.addEventListener('DOMContentLoaded', () => {
     preview.innerHTML = marked.parse(editor.value);
   }
 });
+// AI自动标签分类功能
+document.addEventListener('DOMContentLoaded', () => {
+  const aiTagBtn = document.querySelector('.quick-tag[style*="#7b61ff"]');
+  const noteInput = document.querySelector('.dumpInput');
+
+  if (aiTagBtn && noteInput) {
+    aiTagBtn.addEventListener('click', () => {
+      const text = noteInput.value.trim();
+      if (!text) {
+        alert("请先填写笔记内容");
+        return;
+      }
+      const rule = {
+        "#todo": ["待办","预约","面试","要完成","计划","清单"],
+        "#work": ["实习","项目","代码","会议","工作","开发"],
+        "#idea": ["灵感","想法","创意","构思","方案"],
+        "#sleep": ["失眠","睡觉","入睡","作息","睡眠"],
+        "#健康": ["护肤","饮食","体检","调理","身体"]
+      }
+      let addTag = "";
+      Object.entries(rule).forEach(([tag, words]) => {
+        if (words.some(w => text.includes(w))) addTag += " "+tag;
+      })
+      noteInput.value = noteInput.value + addTag;
+    })
+  }
+})
