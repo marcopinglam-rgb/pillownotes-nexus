@@ -14,7 +14,6 @@
   <link rel="icon" href="assets/icon.svg">
   <link rel="apple-touch-icon" href="assets/icon.svg">
   <link rel="stylesheet" href="styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
 <div id="app" class="app-shell mode-braindump mobile-first" data-mobile-tab="dump">
@@ -74,7 +73,6 @@
           <span class="bd-chip" id="dumpCountChip">0 則</span>
         </div>
         <div class="dump-input-wrap">
-        <div class="dump-input-wrap">
           <textarea id="pillowDump" rows="5" placeholder="而家腦入面有咩？工作訊息、靈感、煩惱…直接寫低。亦可撳 🎤 語音輸入。"></textarea>
           <div class="dump-voice-bar">
             <button type="button" class="voice-btn" id="voiceDumpBtn" aria-pressed="false" title="語音輸入">
@@ -85,30 +83,10 @@
           </div>
         </div>
 
-          <!-- INSERTED: Quick Keywords Bar -->
-        <div class="quick-tags-container">
-          <button type="button" class="quick-tag" onclick="insertKeyword('#idea')">#idea</button>
-          <button type="button" class="quick-tag" onclick="insertKeyword('#todo')">#todo</button>
-          <button type="button" class="quick-tag" onclick="insertKeyword('#sleep')">#sleep</button>
-          <button type="button" class="quick-tag" onclick="insertKeyword('#work')">#work</button>
-          <button class="quick-tag" style="background:#7b61ff;color:#fff;">AI自动分类</button>
+        <div class="dump-tag-toolbar">
+          <p class="dump-tag-hint" id="dumpTagHint">揀煩惱來源，或者撳建議標籤（可再人手改）</p>
+          <button type="button" class="wide-btn" id="suggestDumpTags">建議標籤</button>
         </div>
-
-          </div>
-
-<div class="quick-tags-container">
-  <button type="button" class="quick-tag" onclick="insertKeyword('#工作')">#工作</button>
-  <button type="button" class="quick-tag" onclick="insertKeyword('#靈感')">#靈感</button>
-  <button type="button" class="quick-tag" onclick="insertKeyword('#健康')">#健康</button>
-  <button type="button" class="quick-tag" onclick="insertKeyword('#OT')">#OT</button>
-</div>
-
-<!-- 新增編輯按鈕 -->
-<div class="edit-tool-bar" style="margin: 8px 0; display: flex; gap: 8px;">
-  <button type="button" class="quick-tag" onclick="capitalizeSelectedText()">选中内容大写</button>
-</div>
-
-<div class="tag-row" id="worryTags">
         <div class="tag-row" id="worryTags">
           <button type="button" class="tag" data-tag="工作">工作</button>
           <button type="button" class="tag" data-tag="人情">人情</button>
@@ -449,6 +427,5 @@
 
 <div class="toast" id="toast"></div>
 <script src="app.js"></script>
-  <div id="previewBox" style="margin:16px 8px;padding:12px;border:1px solid #444;color:#eee;min-height:60px;">预览区域</div>
 </body>
 </html>

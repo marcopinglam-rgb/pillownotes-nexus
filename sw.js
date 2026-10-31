@@ -1,5 +1,5 @@
 /* PillowNotes PWA — network-first so UI updates land quickly after deploy */
-const CACHE = "pillownotes-v3";
+const CACHE = "pillownotes-v4";
 const PRECACHE = [
   "./",
   "./index.html",

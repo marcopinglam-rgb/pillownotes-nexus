@@ -55,6 +55,8 @@ const i18n={
     "toast.nothingUndo":"Nothing to undo","toast.nothingRedo":"Nothing to redo","toast.undone":"Undone","toast.redone":"Redone",
     "toast.selectTwo":"Select at least 2 nodes","toast.selectConnect":"Select another node to connect","toast.shareCopied":"Share code copied",
     "toast.imported":"Workspace imported","toast.invalidFile":"Invalid file","confirm.reset":"Reset entire workspace?",
+    "dump.suggestTags":"Suggest tags","dump.tagHint":"Pick a worry source, or tap Suggest tags — you can edit after.",
+    "toast.dumpEmpty":"Write a dump first","toast.dumpNoTags":"No matching tags — pick manually","toast.dumpTags":"Suggested: {tags} (editable)",
     "toast.dumpSaved":"Dump saved","toast.dumpCanvas":"Saved and created canvas node","toast.sleepSaved":"Sleep entry saved",
     "toast.bed":"Bedtime checkpoint recorded","toast.wake":"Wakeup checkpoint recorded","toast.stillAwake":"Still Awake noted — previous bed time adjusted",
     "toast.countdownDone":"Countdown finished — time to wind down","toast.synced":"Synced dumps to Pillow canvas","toast.tomorrow":"Parked for tomorrow morning"
@@ -107,6 +109,8 @@ const i18n={
     "toast.nothingUndo":"沒有可復原的動作","toast.nothingRedo":"沒有可重做的動作","toast.undone":"已復原","toast.redone":"已重做",
     "toast.selectTwo":"請至少選取 2 個節點","toast.selectConnect":"請選取另一個節點以連接","toast.shareCopied":"已複製分享碼",
     "toast.imported":"已匯入工作空間","toast.invalidFile":"無效的檔案","confirm.reset":"確定要重設整個工作空間嗎？",
+    "dump.suggestTags":"建議標籤","dump.tagHint":"揀煩惱來源，或者撳建議標籤（可再人手改）",
+    "toast.dumpEmpty":"先寫一句 dump","toast.dumpNoTags":"未搵到對應標籤，可人手揀","toast.dumpTags":"建議咗：{tags}（可再改）",
     "toast.dumpSaved":"已儲存 Dump","toast.dumpCanvas":"已儲存並建立畫布節點","toast.sleepSaved":"已儲存睡眠紀錄",
     "toast.bed":"已記錄瞓覺 Checkpoint","toast.wake":"已記錄起身 Checkpoint","toast.stillAwake":"已記錄 Still Awake — 已調整上次瞓覺時間",
     "toast.countdownDone":"倒數完 — 係時候放鬆","toast.synced":"已同步 Dump 到枕頭畫布","toast.tomorrow":"已留待聽日朝早"
@@ -125,6 +129,8 @@ function applyI18n(){
   if($("#langSelect"))$("#langSelect").value=lang();
   if($("#defaultHomeSelect"))$("#defaultHomeSelect").value=state.settings.defaultHome||"braindump";
   if($("#morningPromptToggle"))$("#morningPromptToggle").checked=!!state.settings.morningPrompt;
+  if($("#dumpTagHint"))$("#dumpTagHint").textContent=t("dump.tagHint");
+  if($("#suggestDumpTags"))$("#suggestDumpTags").textContent=t("dump.suggestTags");
   updateAIContext();
   renderBrainDump();
 }
@@ -324,6 +330,44 @@ $$("#worryTags .tag").forEach(b=>b.onclick=()=>{
   if(activeTags.has(tag)){activeTags.delete(tag);b.classList.remove("active")}
   else{activeTags.add(tag);b.classList.add("active")}
 });
+
+/* Rule-based dump tags — maps to #worryTags chips, not textarea hashtags */
+const DUMP_TAG_RULES={
+  "工作":["工作","上班","會議","開會","deadline","meeting","work","項目","project","code","代碼","開發","面試","待辦","todo","plan","計劃","清單","預約","實習"],
+  "人情":["人情","同事","上司","老闆","老板","關係","吵架","誤會"],
+  "錢":["錢","錢銀","租金","薪水","salary","bill","卡數","樓價"],
+  "屋企":["屋企","屋企人","阿媽","阿爸","家人","family"],
+  "健康":["健康","身體","體檢","飲食","失眠","瞓覺","瞓唔着","睡眠","入睡","作息","sleep","insomnia","頭痛"],
+  "靈感":["靈感","想法","創意","構思","方案","idea"],
+  "OT":["ot","加班","收工","overtime","夜班"]
+};
+function textHasDumpKeyword(hay,word){
+  const w=String(word||"").toLowerCase();
+  if(!w) return false;
+  if(/^[a-z0-9]+$/.test(w) && w.length<=3){
+    return new RegExp(`(?:^|[^a-z0-9])${w}(?:$|[^a-z0-9])`,"i").test(hay);
+  }
+  return hay.includes(w);
+}
+function suggestDumpTagsFromText(text){
+  const hay=String(text||"").toLowerCase();
+  return Object.entries(DUMP_TAG_RULES).filter(([,words])=>words.some(w=>textHasDumpKeyword(hay,w))).map(([tag])=>tag);
+}
+function applySuggestedDumpTags(tags){
+  tags.forEach(tag=>{
+    activeTags.add(tag);
+    const btn=$(`#worryTags .tag[data-tag="${tag}"]`);
+    if(btn) btn.classList.add("active");
+  });
+}
+if($("#suggestDumpTags")) $("#suggestDumpTags").onclick=()=>{
+  const text=$("#pillowDump")?.value.trim();
+  if(!text) return toast(t("toast.dumpEmpty"));
+  const matched=suggestDumpTagsFromText(text);
+  if(!matched.length) return toast(t("toast.dumpNoTags"));
+  applySuggestedDumpTags(matched);
+  toast(t("toast.dumpTags",{tags:lang()==="zh"?matched.join("、"):matched.join(", ")}));
+};
 
 function addDump({text,toCanvas=false,forTomorrow=false,source="text"}){
   const tags=selectedTags();
@@ -1103,110 +1147,3 @@ function setupServiceWorker(){
   }).catch(()=>{});
 }
 init();
-// Append at the bottom of app.js
-
-// Capitalize selection within any focused, editable element
-function capitalizeSelectedText() {
-  const selection = window.getSelection();
-  if (!selection.toString()) return;
-  
-  const range = selection.getRangeAt(0);
-  const capitalizedText = selection.toString().toUpperCase();
-  
-  range.deleteContents();
-  range.insertNode(document.createTextNode(capitalizedText));
-}
-
-// Quick trigger helper for mobile: Capitalize all text in the active input
-function capitalizeActiveInput() {
-  const activeEl = document.activeElement;
-  if (activeEl && (activeEl.tagName === 'TEXTAREA' || activeEl.tagName === 'INPUT')) {
-    activeEl.value = activeEl.value.toUpperCase();
-  } else if (activeEl && activeEl.hasAttribute('contenteditable')) {
-    activeEl.innerText = activeEl.innerText.toUpperCase();
-  }
-}
-function insertKeyword(tagText) {
-  const inputBox = document.getElementById('pillowDump');
-  const start = inputBox.selectionStart;
-  const end = inputBox.selectionEnd;
-  const originalText = inputBox.value;
-  inputBox.value = originalText.slice(0, start) + tagText + originalText.slice(end);
-  inputBox.selectionStart = inputBox.selectionEnd = start + tagText.length;
-  inputBox.focus();
-}
-document.addEventListener('DOMContentLoaded', () => {
-  const searchBox = document.getElementById('commandInput');
-  if (!searchBox) return;
-  searchBox.addEventListener('paste', function (e) {
-    const items = e.clipboardData.items;
-    for (let i = 0; i < items.length; i++) {
-      const item = items[i];
-      if (item.type.startsWith('image/')) {
-        e.preventDefault();
-        const file = item.getAsFile();
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          searchBox.value += `\n![图片](${ev.target.result})\n`;
-        };
-        reader.readAsDataURL(file);
-        break;
-      }
-    }
-  });
-});
-// 主笔记输入框粘贴图片
-document.addEventListener('DOMContentLoaded', () => {
-  const mainInput = document.getElementById('pillowDump');
-  if (!mainInput) return;
-  mainInput.addEventListener('paste', function(e){
-    const items = e.clipboardData.items;
-    for(let i=0; i<items.length; i++){
-      if(items[i].type.startsWith('image/')){
-        e.preventDefault();
-        const file = items[i].getAsFile();
-        const reader = new FileReader();
-        reader.onload = ev => {
-          mainInput.value += `\n![图片](${ev.target.result})\n`;
-        }
-        reader.readAsDataURL(file);
-        break;
-      }
-    }
-  });
-});
-document.addEventListener('DOMContentLoaded', () => {
-  const editor = document.getElementById('pillowDump');
-  const preview = document.getElementById('previewBox');
-  if (!editor || !preview) return;
-  editor.oninput = () => {
-    preview.innerHTML = marked.parse(editor.value);
-  }
-});
-// AI自动标签分类功能
-document.addEventListener('DOMContentLoaded', () => {
-  const aiTagBtn = document.querySelector('.quick-tag[style*="#7b61ff"]');
-  const noteInput = document.querySelector('.dumpInput');
-
-  if (aiTagBtn && noteInput) {
-    aiTagBtn.addEventListener('click', () => {
-      const text = noteInput.value.trim();
-      if (!text) {
-        alert("请先填写笔记内容");
-        return;
-      }
-      const rule = {
-        "#todo": ["待办","预约","面试","要完成","计划","清单"],
-        "#work": ["实习","项目","代码","会议","工作","开发"],
-        "#idea": ["灵感","想法","创意","构思","方案"],
-        "#sleep": ["失眠","睡觉","入睡","作息","睡眠"],
-        "#健康": ["护肤","饮食","体检","调理","身体"]
-      }
-      let addTag = "";
-      Object.entries(rule).forEach(([tag, words]) => {
-        if (words.some(w => text.includes(w))) addTag += " "+tag;
-      })
-      noteInput.value = noteInput.value + addTag;
-    })
-  }
-})
