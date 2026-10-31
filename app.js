@@ -18,17 +18,17 @@ const i18n={
     "status.saved":"Saved","status.saving":"Saving…","fit":"Fit","share":"Share",
     "inspector.select":"Select something","inspector.hint":"Everything on the canvas can be edited.","inspector.selected":"{n} selected","inspector.properties":"PROPERTIES",
     "inspector.title":"Title","inspector.content":"Content","inspector.type":"Type","inspector.accent":"Accent","inspector.duplicate":"Duplicate","inspector.delete":"Delete",
-    "ai.agent":"AI AGENT","ai.copilot":"Nexus Copilot","ai.organize":"Organize","ai.brainstorm":"Brainstorm","ai.summarize":"Summarize","ai.plan":"Plan","ai.sleep":"Sleep",
-    "ai.context":"CONTEXT","ai.nodesSelected":"{n} nodes selected","ai.contextHint":"Agent can read canvas, dumps and sleep logs.",
+    "ai.agent":"Rule helper","ai.copilot":"Nexus Helper","ai.organize":"Organize","ai.brainstorm":"Brainstorm","ai.summarize":"Summarize","ai.plan":"Plan","ai.sleep":"Sleep",
+    "ai.context":"CONTEXT","ai.nodesSelected":"{n} nodes selected","ai.contextHint":"Reads canvas, dumps and sleep logs, then replies with rules. Not a large language model.",
     "ai.suggestOrganize":"Organize this canvas","ai.suggestPlan":"Turn ideas into a plan","ai.suggestSleep":"Wind-down plan for tonight","ai.suggestPatterns":"Find hidden patterns",
-    "ai.placeholder":"Ask Nexus to create, edit or organize…","ai.promptAnalyze":"Analyze the selected node and suggest the next action.",
-    "ai.replyOrganize":"I grouped related nodes into a clearer flow and created a new frame for the launch plan.",
-    "ai.replyBrainstorm":"I added three new concept directions around adaptive interfaces, shared memory and agent collaboration.",
-    "ai.replySummarize":"This canvas contains {nodes} nodes and {connectors} relationships. The dominant theme is turning ideas into an executable launch plan.",
-    "ai.replyPlan":"I converted the selected ideas into a three-step execution plan on the canvas.",
-    "ai.replySleep":"Tonight's wind-down: 1) dump remaining thoughts 2) stop screens in 60 min 3) checkpoint bed time. You have {dumps} open dumps and avg sleep {avg}h.",
-    "ai.replyDefault":"I can create nodes, organize the canvas, summarize visible content, connect related ideas and plan your wind-down.",
-    "ai.concept1":"Adaptive workspace","ai.concept2":"Shared agent memory","ai.concept3":"Multiplayer AI roles","ai.conceptContent":"AI-generated concept direction",
+    "ai.placeholder":"Ask the helper to rearrange, summarise, or plan a wind-down…","ai.promptAnalyze":"Analyze the selected node and suggest the next action.",
+    "ai.replyOrganize":"I used a simple layout rule to space the nodes into a 3-column grid. No language model was used.",
+    "ai.replyBrainstorm":"I dropped three placeholder idea cards so you can edit them. They are scaffolding, not generated insight.",
+    "ai.replySummarize":"This canvas has {nodes} nodes and {connectors} links. You have {dumps} unsynced dumps and average sleep {avg}h.",
+    "ai.replyPlan":"I added a three-step card row you can edit. It is a template, not a custom plan.",
+    "ai.replySleep":"Tonight, rule-based: 1) dump leftover thoughts 2) screens off in 60 min 3) bed checkpoint. Open dumps: {dumps}. Avg sleep: {avg}h. Last dump: {last}.",
+    "ai.replyDefault":"I can rearrange nodes, drop plan cards, summarise counts, and suggest a wind-down from your dumps. Replies are rules, not an LLM.",
+    "ai.concept1":"Adaptive workspace","ai.concept2":"Shared agent memory","ai.concept3":"Multiplayer AI roles","ai.conceptContent":"Placeholder direction — edit this",
     "ai.stepDefine":"Define","ai.stepPrototype":"Prototype","ai.stepValidate":"Validate",
     "ai.step1":"Choose one core workflow","ai.step2":"Build the interaction","ai.step3":"Test with real users",
     "layers":"Layers","layersSearch":"Search layers…","history":"History",
@@ -58,6 +58,8 @@ const i18n={
     "dump.suggestTags":"Suggest tags","dump.tagHint":"Pick a worry source, or tap Suggest tags — you can edit after.",
     "toast.dumpEmpty":"Write a dump first","toast.dumpNoTags":"No matching tags — pick manually","toast.dumpTags":"Suggested: {tags} (editable)",
     "toast.dumpSaved":"Dump saved","toast.dumpCanvas":"Saved and created canvas node","toast.sleepSaved":"Sleep entry saved",
+    "rf.eyebrow":"Reframe · rule-based","rf.title":"Cognitive reframe · morning review","rf.lead":"Matches your sentence to a theme template. Not an LLM, not a diagnosis.","rf.inputLabel":"The thought you keep looping","rf.placeholder":"e.g. tomorrow’s meeting is going to go badly…","rf.run":"Suggest reframe","rf.openHelper":"Open helper","rf.thought":"Thought","rf.try":"Try seeing it this way","rf.next":"Next","rf.note":"Rule template — not diagnosis or medical advice.","rf.empty":"Write a thought first","rf.theme.work":"Work stress","rf.theme.social":"Relationships","rf.theme.self":"Self-doubt","rf.theme.body":"Body fatigue","rf.theme.future":"Future anxiety","rf.theme.money":"Money stress","rf.theme.family":"Family pressure","rf.theme.study":"Study stress","rf.theme.general":"Tonight","rf.crisis":"If you feel unsafe or at risk, stop here and contact local emergency services, or the Samaritans Hong Kong 24-hour hotline 2382 0000. This app cannot help in a crisis.",
+    "bridge.lead":"Dumps become Pillow canvas nodes. The helper can only rearrange with rules.",
     "toast.bed":"Bedtime checkpoint recorded","toast.wake":"Wakeup checkpoint recorded","toast.stillAwake":"Still Awake noted — previous bed time adjusted",
     "toast.countdownDone":"Countdown finished — time to wind down","toast.synced":"Synced dumps to Pillow canvas","toast.tomorrow":"Parked for tomorrow morning"
   },
@@ -72,17 +74,17 @@ const i18n={
     "status.saved":"已儲存","status.saving":"儲存中…","fit":"適合畫面","share":"分享",
     "inspector.select":"請選取物件","inspector.hint":"畫布上的所有內容都可以編輯。","inspector.selected":"已選取 {n} 個","inspector.properties":"屬性",
     "inspector.title":"標題","inspector.content":"內容","inspector.type":"類型","inspector.accent":"強調色","inspector.duplicate":"複製","inspector.delete":"刪除",
-    "ai.agent":"AI 代理","ai.copilot":"Nexus 副駕","ai.organize":"整理","ai.brainstorm":"腦力激盪","ai.summarize":"摘要","ai.plan":"規劃","ai.sleep":"睡眠",
-    "ai.context":"情境","ai.nodesSelected":"已選取 {n} 個節點","ai.contextHint":"代理可讀取畫布、Dump 同睡眠紀錄。",
+    "ai.agent":"規則助手","ai.copilot":"Nexus Helper","ai.organize":"整理","ai.brainstorm":"腦力激盪","ai.summarize":"摘要","ai.plan":"規劃","ai.sleep":"睡眠",
+    "ai.context":"情境","ai.nodesSelected":"已選取 {n} 個節點","ai.contextHint":"讀畫布、Dump、睡眠紀錄，用規則回覆。唔係大型語言模型。",
     "ai.suggestOrganize":"整理此畫布","ai.suggestPlan":"將靈感轉為計畫","ai.suggestSleep":"今晚放鬆計劃","ai.suggestPatterns":"找出隱藏模式",
-    "ai.placeholder":"請 Nexus 建立、編輯或整理…","ai.promptAnalyze":"分析所選節點並建議下一步行動。",
-    "ai.replyOrganize":"我已將相關節點整理成更清晰的流程，並為發布計畫建立了新框架。",
-    "ai.replyBrainstorm":"我新增了三個概念方向：自適應工作空間、共享代理記憶與多人 AI 協作。",
-    "ai.replySummarize":"此畫布共有 {nodes} 個節點與 {connectors} 條關聯。主題是將靈感轉為可執行的發布計畫。",
-    "ai.replyPlan":"我已將所選靈感轉換為畫布上的三步驟執行計畫。",
-    "ai.replySleep":"今晚建議：1）先 dump 未倒出嘅諗法 2）60 分鐘後熄螢幕 3）一鍵 checkpoint 瞓覺。你有 {dumps} 則未處理 dump，平均睡眠 {avg} 小時。",
-    "ai.replyDefault":"我可以建立節點、整理畫布、摘要內容、連接靈感，同埋幫你計劃風乾放鬆。",
-    "ai.concept1":"自適應工作空間","ai.concept2":"共享代理記憶","ai.concept3":"多人 AI 協作","ai.conceptContent":"AI 產生的概念方向",
+    "ai.placeholder":"請助手排位、摘要，或者建議今晚 wind-down…","ai.promptAnalyze":"分析所選節點並建議下一步行動。",
+    "ai.replyOrganize":"我用簡單排位規則將節點分成三欄。冇用語言模型。",
+    "ai.replyBrainstorm":"我加咗三張可以改嘅靈感卡，係骨架唔係生成洞察。",
+    "ai.replySummarize":"呢幅畫布有 {nodes} 個節點、{connectors} 條線。未同步 dump {dumps} 則，平均睡眠 {avg} 小時。",
+    "ai.replyPlan":"我加咗三步模板卡，你可以改。唔係度身計劃。",
+    "ai.replySleep":"今晚規則建議：1）dump 未倒出嘅諗法 2）60 分鐘後熄螢幕 3）checkpoint 瞓覺。未處理 dump：{dumps}。平均睡眠：{avg}h。最近一句：{last}。",
+    "ai.replyDefault":"我可以排節點、加計劃卡、用數字做摘要、同埋按 dump 建議 wind-down。回覆係規則，唔係 LLM。",
+    "ai.concept1":"自適應工作空間","ai.concept2":"共享代理記憶","ai.concept3":"多人 AI 協作","ai.conceptContent":"占位方向 — 請改呢句",
     "ai.stepDefine":"定義","ai.stepPrototype":"原型","ai.stepValidate":"驗證",
     "ai.step1":"選擇一個核心工作流程","ai.step2":"建立互動原型","ai.step3":"與真實使用者測試",
     "layers":"圖層","layersSearch":"搜尋圖層…","history":"歷史紀錄",
@@ -112,6 +114,8 @@ const i18n={
     "dump.suggestTags":"建議標籤","dump.tagHint":"揀煩惱來源，或者撳建議標籤（可再人手改）",
     "toast.dumpEmpty":"先寫一句 dump","toast.dumpNoTags":"未搵到對應標籤，可人手揀","toast.dumpTags":"建議咗：{tags}（可再改）",
     "toast.dumpSaved":"已儲存 Dump","toast.dumpCanvas":"已儲存並建立畫布節點","toast.sleepSaved":"已儲存睡眠紀錄",
+    "rf.eyebrow":"重構 · 規則建議","rf.title":"認知重構 · 晨間回顧","rf.lead":"根據你寫低嘅一句配對主題模板。唔係 LLM，亦唔係診斷。","rf.inputLabel":"而家最掛住嘅一句想法","rf.placeholder":"例如：聽日個 meeting 一定會搞砸…","rf.run":"重構建議","rf.openHelper":"開助手","rf.thought":"原想法","rf.try":"試下咁睇","rf.next":"下一步","rf.note":"規則模板，唔係診斷或醫療建議。","rf.empty":"先寫一句想法","rf.theme.work":"工作壓力","rf.theme.social":"人際關係","rf.theme.self":"自我懷疑","rf.theme.body":"身體疲累","rf.theme.future":"未來焦慮","rf.theme.money":"金錢壓力","rf.theme.family":"家庭壓力","rf.theme.study":"學業壓力","rf.theme.general":"今晚","rf.crisis":"如果你覺得自己好危險，停低，打緊急服務或者撒瑪利亞會 24 小時熱線 2382 0000。呢個 app 處理唔到危機。",
+    "bridge.lead":"Dump 會變成枕頭畫布節點；助手淨係可以用規則幫你排位。",
     "toast.bed":"已記錄瞓覺 Checkpoint","toast.wake":"已記錄起身 Checkpoint","toast.stillAwake":"已記錄 Still Awake — 已調整上次瞓覺時間",
     "toast.countdownDone":"倒數完 — 係時候放鬆","toast.synced":"已同步 Dump 到枕頭畫布","toast.tomorrow":"已留待聽日朝早"
   }
@@ -131,6 +135,18 @@ function applyI18n(){
   if($("#morningPromptToggle"))$("#morningPromptToggle").checked=!!state.settings.morningPrompt;
   if($("#dumpTagHint"))$("#dumpTagHint").textContent=t("dump.tagHint");
   if($("#suggestDumpTags"))$("#suggestDumpTags").textContent=t("dump.suggestTags");
+  if($("#reframeEyebrow"))$("#reframeEyebrow").textContent=t("rf.eyebrow");
+  if($("#reframeTitle"))$("#reframeTitle").textContent=t("rf.title");
+  if($("#reframeLead"))$("#reframeLead").textContent=t("rf.lead");
+  if($("#reframeInputLabelText"))$("#reframeInputLabelText").textContent=t("rf.inputLabel");
+  if($("#reframeInput"))$("#reframeInput").placeholder=t("rf.placeholder");
+  if($("#runReframe"))$("#runReframe").textContent=t("rf.run");
+  if($("#openAIFromBD"))$("#openAIFromBD").textContent=t("rf.openHelper");
+  if($("#aiInput"))$("#aiInput").placeholder=t("ai.placeholder");
+  if($("#aiAgentLabel"))$("#aiAgentLabel").textContent=t("ai.agent");
+  if($("#aiCopilotTitle"))$("#aiCopilotTitle").textContent=t("ai.copilot");
+  if($("#aiContextHint"))$("#aiContextHint").textContent=t("ai.contextHint");
+  if($("#bridgeLead"))$("#bridgeLead").textContent=t("bridge.lead");
   updateAIContext();
   renderBrainDump();
 }
@@ -171,6 +187,7 @@ const defaults={
     stillAwake:[],
     protocols:[],
     pendingTomorrow:[],
+    reframeUsed:[],
     settings:{flexCountdownMinutes:30}
   }
 };
@@ -194,6 +211,7 @@ function load(){
     if(s.settings.defaultHome==="bringdown")s.settings.defaultHome="braindump";
     if(s.appMode==="bringdown")s.appMode="braindump";
     if(!s.appMode)s.appMode=s.settings.defaultHome||"braindump";
+    if(!Array.isArray(s.pillownotes.reframeUsed))s.pillownotes.reframeUsed=[];
     // migrate old dumps shape
     s.pillownotes.dumps=(s.pillownotes.dumps||[]).map(d=>({
       id:d.id||uid(),
@@ -368,6 +386,92 @@ if($("#suggestDumpTags")) $("#suggestDumpTags").onclick=()=>{
   applySuggestedDumpTags(matched);
   toast(t("toast.dumpTags",{tags:lang()==="zh"?matched.join("、"):matched.join(", ")}));
 };
+
+const CRISIS_WORDS=["自殺","想死","尋死","自殘","kill myself","suicide","end my life","self-harm","自盡"];
+const REFRAME_THEME_ORDER=["study","money","family","social","work","future","self","body"];
+const REFRAME_THEME_WORDS={
+  study:["dissertation", "professor", "assignment", "midterm", "thesis", "essay", "exam", "gpa", "dse", "fyp", "功課", "考試", "成績", "分數", "溫唔切", "肥佬", "補考", "畢業", "測驗", "讀唔切", "溫唔晒", "大考"],
+  money:["credit card", "mortgage", "卡數", "欠債", "租金", "供樓", "冇錢", "人工", "出糧", "薪水", "蝕錢", "債", "錢", "還唔起", "月光族"],
+  family:["阿媽", "阿爸", "老豆", "老母", "父母", "屋企人", "返屋企", "幾時拍拖", "幾時生", "相睇", "阿哥", "家姐"],
+  social:["男朋友", "女朋友", "另一半", "已讀不回", "冷戰", "ghost", "鬧交", "朋友", "拍拖", "約會", "同事", "前度"],
+  work:["presentation", "deadline", "meeting", "report", "加班", "開ot", "老細", "上司", "boss", "返工", "聽日返工", "做唔切", "未做完", "開會", "ot", "開call", "未搞掂", "趕唔切", "返office"],
+  future:["前途", "前路", "將來", "轉工", "辭職", "裁員", "見工", "買樓", "升職", "career", "layoff", "冇將來"],
+  self:["懷疑自己", "冇信心", "唔夠好", "好失敗", "好廢", "後悔", "imposter", "burnout", "好迷茫"],
+  body:["瞓唔着", "瞓唔到", "失眠", "頭痛", "好攰", "超攰", "周身痛", "冇精神", "眼瞓", "瞓唔夠"]
+};
+const REFRAME_TEMPLATES={
+  work:[
+    {"id": "work-1", "zh": {"reframe": "你已經為今日做咗好多，而家嘅任務係俾自己真正休息，唔係繼續喺腦入面開OT。", "action": "試下喺手機寫低 3 樣今日完成咗嘅嘢，然後合埋眼深呼吸 3 次。"}, "en": {"reframe": "You already did a lot today. The job now is to rest — not to keep overtime running in your head.", "action": "Write three things you finished today, then close your eyes and take three slow breaths."}},
+    {"id": "work-2", "zh": {"reframe": "工作永遠做唔完，但你嘅精神需要 recharge。放低嘅嘢聽日唔會消失，但你嘅精力會。", "action": "今晚淨係諗一件事：你值得休息。其他嘢交俾聽日嘅你。"}, "en": {"reframe": "Work never ends, but your energy does. What you put down tonight will still be there; you may not be.", "action": "Hold one thought: you deserve rest. Leave the rest for tomorrow-you."}},
+    {"id": "work-3", "zh": {"reframe": "你嘅焦慮嚟自責任感，而唔係能力不足。識得停低嘅人，先至行得遠。", "action": "試下用 4-7-8 呼吸法：吸 4 秒、hold 7 秒、呼 8 秒，重複 3 次。"}, "en": {"reframe": "The anxiety comes from responsibility, not lack of ability. People who can stop go further.", "action": "Try 4-7-8 breathing: in 4, hold 7, out 8. Repeat three times."}}
+  ],
+  social:[
+    {"id": "social-1", "zh": {"reframe": "人與人之間有起有伏係正常嘅。今晚唔需要解決所有問題，俾啲空間自己同對方。", "action": "如果件事仲喺心入面轉，試下寫低你真正想表達嘅一句說話，然後放低。"}, "en": {"reframe": "Relationships rise and fall. You do not have to resolve everything tonight.", "action": "If it is still looping, write the one sentence you actually want to say — then put it down."}},
+    {"id": "social-2", "zh": {"reframe": "你嘅感受係 valid 嘅，唔好因為瞓唔著就否定自己嘅情緒。但呢一刻，你嘅平靜比任何嘢都重要。", "action": "想像將呢段關係嘅煩惱放喺一個盒度，聽日先打開。今晚個盒鎖住。"}, "en": {"reframe": "Your feelings are valid. Tonight, your calm matters more than any conversation.", "action": "Put the relationship worry in a box. Open it tomorrow. Tonight the box stays closed."}},
+    {"id": "social-3", "zh": {"reframe": "關係嘅嘢急唔嚟。今晚你唯一需要照顧嘅關係，係同自己嘅關係。", "action": "合埋眼，想像一個令你感到安心嘅人或者地方，停留 30 秒。"}, "en": {"reframe": "Relationships cannot be rushed. The only relationship to care for tonight is the one with yourself.", "action": "Close your eyes and picture a safe person or place for 30 seconds."}}
+  ],
+  self:[
+    {"id": "self-1", "zh": {"reframe": "你比自己想像中更有能力，只係而家太攰所以睇唔到。每個人都有懷疑自己嘅時候，但呢啲想法唔代表事實。", "action": "諗一樣你最近做到而你覺得自豪嘅事，幾細都得。"}, "en": {"reframe": "You are more capable than the tired version of you can see. These thoughts are not facts.", "action": "Name one recent thing you are proud of, however small."}},
+    {"id": "self-2", "zh": {"reframe": "負面嘅自我評價通常喺夜晚放大十倍。聽日朝早你睇返同一件事，感覺會好唔同。", "action": "今晚嘅目標唔係解決所有問題，只係安全咁渡過呢個晚上。"}, "en": {"reframe": "Self-criticism grows tenfold at night. The same thought will look different in the morning.", "action": "Tonight's goal is not solving everything. It is getting through the night safely."}},
+    {"id": "self-3", "zh": {"reframe": "你喺度努力緊，呢一點本身就值得尊重。成長唔係一條直線，而係有高有低嘅旅程。", "action": "對自己講一句：「我已經做得夠好，而家我需要休息。」"}, "en": {"reframe": "You are already trying. That itself deserves respect. Growth is not a straight line.", "action": "Say: I have done enough. Now I need rest."}}
+  ],
+  body:[
+    {"id": "body-1", "zh": {"reframe": "身體攰嘅時候，情緒都會被拖低。而家最重要嘅唔係解決問題，而係俾身體恢復。", "action": "做一個簡單嘅身體掃描：由頭頂開始，慢慢感受每個部位，放鬆佢。"}, "en": {"reframe": "When the body is tired, mood follows. Recovery comes before problem-solving.", "action": "Do a slow body scan from the crown down, and let each part drop a little."}},
+    {"id": "body-2", "zh": {"reframe": "你嘅身體今日為你撐咗成日，而家係時候回報佢。攰唔係 weakness，係 signal。", "action": "試下慢慢轉動膊頭 5 次，然後深深呼一口氣，感受身體嘅重量落喺床上面。"}, "en": {"reframe": "Your body carried you all day. Tiredness is a signal, not a weakness.", "action": "Roll your shoulders five times, then exhale and let your weight drop into the bed."}},
+    {"id": "body-3", "zh": {"reframe": "攰嘅時候唔好逼自己正面，接受「今日就係攰」反而係最好嘅放鬆。", "action": "閂眼，想像自己浮喺溫暖嘅水面，每呼一口氣就下沉少少，更放鬆。"}, "en": {"reframe": "When you are exhausted, do not force positivity. Accepting 'today I am tired' is the rest.", "action": "Close your eyes. Imagine floating on warm water, more relaxed with each exhale."}}
+  ],
+  future:[
+    {"id": "future-1", "zh": {"reframe": "未來係由無數個「今日」組成嘅。你今日好好休息，就係為未來做咗最重要嘅投資。", "action": "今晚淨係諗一件事：聽日嘅第一步係乜？淨係第一步就夠。"}, "en": {"reframe": "The future is made of todays. Rest tonight is an investment, not a delay.", "action": "Name only tomorrow's first step. That is enough."}},
+    {"id": "future-2", "zh": {"reframe": "焦慮嚟自對未知嘅想像，而唔係現實。大部份你擔心嘅事，最後都冇發生。", "action": "試下將你擔心嘅嘢寫成一句話，然後喺旁邊寫「呢個係事實定係想像？」"}, "en": {"reframe": "Anxiety is often imagination, not fact. Most of what you fear does not arrive.", "action": "Write the worry as one sentence, then add: fact or imagination?"}},
+    {"id": "future-3", "zh": {"reframe": "你唔需要今晚就知道所有答案。好多人生最好嘅轉變，都係喺你冇計劃嘅時候出現。", "action": "合埋眼，想像 3 個月後嘅你——健康、平靜、安然。你正在朝呢個方向行緊。"}, "en": {"reframe": "You do not need every answer tonight. Many good turns arrive unplanned.", "action": "Close your eyes and picture a calmer you in three months."}}
+  ],
+  money:[
+    {"id": "money-1", "zh": {"reframe": "財務壓力好真實，但失眠唔會令戶口多咗錢。好好休息，聽日嘅你會有更清晰嘅頭腦去應對。", "action": "今晚淨係 focus 喺你可控制嘅事：呼吸、放鬆、俾身體恢復。"}, "en": {"reframe": "Money stress is real. Staying awake will not add to the account. A rested mind thinks clearer.", "action": "Focus on what you can control tonight: breath, rest, recovery."}},
+    {"id": "money-2", "zh": {"reframe": "錢嘅問題通常需要時間解決，而唔係一個晚上。你嘅健康係最重要嘅資產，唔好為錢犧牲佢。", "action": "想像將財務煩惱放喺一個文件夾入面，標籤「聽日處理」，然後放埋一邊。"}, "en": {"reframe": "Money problems take time, not a single night. Your health is the asset that remains.", "action": "File the money worry under 'tomorrow'. Put the folder aside."}},
+    {"id": "money-3", "zh": {"reframe": "好多人都面對緊類似嘅壓力，你唔係一個人。一步一步嚟，今晚嘅任務只係休息。", "action": "諗一樣唔使錢但令你感到富足嘅嘢——可能係一個關係、一個回憶、一個技能。"}, "en": {"reframe": "Many people carry similar pressure. You are not alone. Tonight the task is rest.", "action": "Name one thing that makes you feel rich without costing money."}}
+  ],
+  family:[
+    {"id": "family-1", "zh": {"reframe": "家人嘅說話有時好有重量，但佢哋嘅擔憂往往嚟自關心，只係表達方式唔同。你嘅感受同樣重要。", "action": "今晚俾自己一個 break：你唔需要滿足所有人嘅期望，尤其是臨瞓前。"}, "en": {"reframe": "Family words can land heavily. Your feelings count too. This does not have to be solved tonight.", "action": "Give yourself a break: you do not have to meet every expectation before sleep."}},
+    {"id": "family-2", "zh": {"reframe": "家庭關係係長期嘅功課，唔需要一晚解決。你嘅平靜比任何對話都更有價值。", "action": "想像喺你同家人之間有一道柔和嘅光牆，保護你今晚嘅休息空間。"}, "en": {"reframe": "Family work is long-term. Your calm tonight is more valuable than any late conversation.", "action": "Imagine a soft wall of light between you and the family topic, just for tonight."}},
+    {"id": "family-3", "zh": {"reframe": "你嘅人生係屬於你嘅。家人嘅期望可以參考，但你嘅幸福先係終極目標。", "action": "寫低一句：「我有權選擇自己嘅節奏。」然後深呼吸，放低。"}, "en": {"reframe": "Your life is yours. Family hopes can inform you; they do not have to drive tonight.", "action": "Write: I get to choose my own pace. Then put the pen down."}}
+  ],
+  study:[
+    {"id": "study-1", "zh": {"reframe": "一條攰嘅大腦吸收唔到任何嘢。與其夾硬繼續，不如俾自己真正休息，聽日效率會更高。", "action": "閂晒所有 notes，今晚嘅任務係 sleep。知識會喺你瞓覺嘅時候自己整理。"}, "en": {"reframe": "A tired brain absorbs almost nothing. Rest is the higher-efficiency move.", "action": "Close the notes. Tonight's task is sleep."}},
+    {"id": "study-2", "zh": {"reframe": "你嘅價值唔係由分數定義嘅。盡咗力嘅你，已經值得尊重。", "action": "諗一樣你學到而唔關考試事嘅嘢——可能係一個概念、一個技能、一個領悟。"}, "en": {"reframe": "Your worth is not a score. Effort already deserves respect.", "action": "Name one thing you learned that is not about the exam."}},
+    {"id": "study-3", "zh": {"reframe": "學業壓力好多時係暫時嘅，但你嘅心理健康係長期嘅。唔好為短期目標犧牲長期健康。", "action": "合埋眼，想像你畢咗業之後嘅自己回頭望呢一刻——佢會同你講「冇事嘅，你做到」。"}, "en": {"reframe": "Study stress is often temporary. Sleep is the longer asset.", "action": "Close your eyes and hear a later you say: you made it."}}
+  ],
+  general:[
+    {"id": "gen-1", "zh": {"reframe": "今晚唔需要解決所有問題。你嘅任務只係安全、平靜咁渡過呢個晚上。", "action": "深呼吸 3 次，每一次呼氣嘅時候想像將一個煩惱放出身體。"}, "en": {"reframe": "You do not have to solve everything tonight. The task is to get through the night safely.", "action": "Take three breaths. On each exhale, put one worry down."}},
+    {"id": "gen-2", "zh": {"reframe": "煩惱喺夜晚睇落總係更大。俾自己 permission to rest——你值得。", "action": "試下喺心入面數 10 樣令你感恩嘅小事，幾簡單都得。"}, "en": {"reframe": "Worries look larger at night. Give yourself permission to rest. You deserve it.", "action": "Name ten small things you are grateful for, however ordinary."}},
+    {"id": "gen-3", "zh": {"reframe": "你已經捱過咗好多你以為過唔到嘅日子。今晚都一樣會過。", "action": "將手放喺心口，感受心跳，同自己講：「我喺度，我安全，我放鬆。」"}, "en": {"reframe": "You have already survived nights you thought you would not. This one will pass too.", "action": "Hand on chest. Say: I am here. I am safe. I can rest."}}
+  ]
+};
+function isCrisisText(text){
+  const hay=String(text||"").toLowerCase();
+  return CRISIS_WORDS.some(w=>hay.includes(w.toLowerCase()));
+}
+function extractReframeTheme(text){
+  const hay=String(text||"").toLowerCase();
+  for(const theme of REFRAME_THEME_ORDER){
+    const words=REFRAME_THEME_WORDS[theme]||[];
+    if(words.some(w=>textHasDumpKeyword(hay,w))) return theme;
+  }
+  return "general";
+}
+function pickReframeTemplate(theme){
+  const pool=REFRAME_TEMPLATES[theme]||REFRAME_TEMPLATES.general;
+  const used=state.pillownotes.reframeUsed||[];
+  const fresh=pool.filter(item=>!used.includes(item.id));
+  const pick=(fresh.length?fresh:pool)[0];
+  if(pick){
+    const next=[...used.filter(id=>id!==pick.id),pick.id].slice(-8);
+    state.pillownotes.reframeUsed=next;
+  }
+  return pick;
+}
+function themeToWorryTag(theme){
+  return {work:"工作",social:"人情",money:"錢",family:"屋企",body:"健康",study:"工作",future:"工作",self:"健康"}[theme]||"健康";
+}
 
 function addDump({text,toCanvas=false,forTomorrow=false,source="text"}){
   const tags=selectedTags();
@@ -759,20 +863,21 @@ $("#flexCountdown").onclick=()=>{
 /* Cognitive reframe + morning review */
 $("#runReframe").onclick=()=>{
   const thought=$("#reframeInput").value.trim();
-  if(!thought)return toast(lang()==="zh"?"先寫一句想法":"Write a thought first");
-  const templates=lang()==="zh"?[
-    `呢個諗法好正常，但唔等於事實。你可以改成：「我可以準備到最好，結果唔完全由我控制。」`,
-    `將「一定會搞砸」改寫成：「我之前都處理過類似情況，今晚先休息，聽日再應對。」`,
-    `把焦點由災難 foresight 轉成可控行動：寫低聽日第一個 10 分鐘步驟，然後 Brain Dump。`
-  ]:[
-    `This thought is valid, but not a fact. Try: "I can prepare well; outcomes aren't fully mine to control."`,
-    `Rewrite catastrophe into: "I've handled similar situations. Rest now, respond tomorrow."`,
-    `Shift from doom forecast to one controllable action: write tomorrow's first 10-minute step, then Brain Dump.`
-  ];
-  const reply=templates[Math.floor(Math.random()*templates.length)];
-  $("#reframeOutput").innerHTML=`<strong>${lang()==="zh"?"原想法":"Thought"}</strong><p>${escape(thought)}</p><strong>${lang()==="zh"?"重構":"Reframe"}</strong><p>${escape(reply)}</p>`;
-  // also save as dump
-  state.pillownotes.dumps.unshift({id:uid(),text:`[Reframe] ${thought}\n→ ${reply}`,tags:["健康"],createdAt:isoNow(),toCanvas:false,forTomorrow:false,nodeId:null});
+  if(!thought)return toast(t("rf.empty"));
+  if(isCrisisText(thought)){
+    $("#reframeOutput").innerHTML=`<p class="rf-note">${escape(t("rf.crisis"))}</p>`;
+    return;
+  }
+  const theme=extractReframeTheme(thought);
+  const tpl=pickReframeTemplate(theme);
+  if(!tpl) return toast(t("rf.empty"));
+  const copy=tpl[lang()]||tpl.zh;
+  $("#reframeOutput").innerHTML=`<p class="rf-theme">${escape(t("rf.theme."+theme))}</p>
+    <strong>${escape(t("rf.thought"))}</strong><p>${escape(thought)}</p>
+    <strong>${escape(t("rf.try"))}</strong><p>${escape(copy.reframe)}</p>
+    <p class="rf-action">${escape(t("rf.next"))}：${escape(copy.action)}</p>
+    <p class="rf-note">${escape(t("rf.note"))}</p>`;
+  state.pillownotes.dumps.unshift({id:uid(),text:`[Reframe] ${thought}\n→ ${copy.reframe}`,tags:[themeToWorryTag(theme)],createdAt:isoNow(),toCanvas:false,forTomorrow:false,nodeId:null});
   save("hist.pillow");renderDumpList();
 };
 $("#morningReviewBtn").onclick=runMorningReview;
@@ -984,26 +1089,37 @@ function openAI(){$("#aiPanel").classList.add("open")}
 $("#aiBtn").onclick=openAI;$("#closeAI").onclick=()=>$("#aiPanel").classList.remove("open");
 $$("[data-agent-mode]").forEach(b=>b.onclick=()=>{$$("[data-agent-mode]").forEach(x=>x.classList.remove("active"));b.classList.add("active");agentMode=b.dataset.agentMode});
 function aiMessage(role,text){$("#aiChat").insertAdjacentHTML("beforeend",`<div class="ai-msg ${role}">${escape(text)}</div>`);$("#aiChat").scrollTop=$("#aiChat").scrollHeight}
+function lastDumpPreview(){
+  const dump=state.pillownotes.dumps.find(d=>!(d.text||"").startsWith("[Reframe]"))||state.pillownotes.dumps[0];
+  if(!dump) return lang()==="zh"?"未有":"none";
+  const text=(dump.text||"").replace(/\s+/g," ").slice(0,40);
+  return text+(dump.text.length>40?"…":"");
+}
+function helperCounts(){
+  return {
+    dumps:state.pillownotes.dumps.filter(d=>!d.toCanvas).length,
+    avg:avgSleep()?avgSleep().toFixed(1):"—",
+    last:lastDumpPreview(),
+    nodes:ws().nodes.length,
+    connectors:ws().connectors.length
+  };
+}
 function runAgent(prompt){
   aiMessage("user",prompt);
   setTimeout(()=>{
+    const counts=helperCounts();
     let reply="";
-    if(agentMode==="sleep"||/sleep|wind|瞓|睡眠|放鬆/i.test(prompt)){
-      reply=t("ai.replySleep",{dumps:state.pillownotes.dumps.filter(d=>!d.toCanvas).length,avg:avgSleep()?avgSleep().toFixed(1):"—"});
-      // create wind-down plan on pillow canvas
-      ensurePillowWs();
-      ["Dump remaining thoughts","Screens off in 60m","Bed checkpoint"].forEach((title,i)=>{
-        createNodeOn("pillow","card",800+i*280,1100,{title:`WIND ${i+1}`,content:title,color:["#ffd56a","#8b7cff","#68e1d1"][i]});
-      });
-      save("hist.aiPlan");
+    if(isCrisisText(prompt)) reply=t("rf.crisis");
+    else if(agentMode==="sleep"||/sleep|wind|瞓|睡眠|放鬆/i.test(prompt)){
+      reply=t("ai.replySleep",counts);
     }
-    else if(agentMode==="organize"||/organize|整理/i.test(prompt)){reply=t("ai.replyOrganize");autoOrganize()}
-    else if(agentMode==="brainstorm"||/idea|brainstorm|靈感|腦力/i.test(prompt)){reply=t("ai.replyBrainstorm");addBrainstorm()}
-    else if(agentMode==="summarize"||/summarize|摘要/i.test(prompt)){reply=t("ai.replySummarize",{nodes:ws().nodes.length,connectors:ws().connectors.length})}
-    else if(agentMode==="plan"||/plan|計畫|規劃/i.test(prompt)){reply=t("ai.replyPlan");addPlan()}
-    else reply=t("ai.replyDefault");
+    else if(agentMode==="organize"||/organize|整理/i.test(prompt)){reply=t("ai.replyOrganize",counts);autoOrganize()}
+    else if(agentMode==="brainstorm"||/idea|brainstorm|靈感|腦力/i.test(prompt)){reply=t("ai.replyBrainstorm",counts);addBrainstorm()}
+    else if(agentMode==="summarize"||/summarize|摘要/i.test(prompt)){reply=t("ai.replySummarize",counts)}
+    else if(agentMode==="plan"||/plan|計畫|規劃/i.test(prompt)){reply=t("ai.replyPlan",counts);addPlan()}
+    else reply=t("ai.replyDefault",counts);
     aiMessage("ai",reply);if(state.appMode==="canvas")render();
-  },500);
+  },220);
 }
 $("#sendAI").onclick=()=>{const v=$("#aiInput").value.trim();if(!v)return;$("#aiInput").value="";runAgent(v)};
 $("#aiInput").onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();$("#sendAI").click()}};

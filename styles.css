@@ -105,6 +105,9 @@
 .reframe-box{margin-top:12px;background:#0f1418;border:1px solid var(--line);border-radius:14px;padding:12px;font-size:13px;line-height:1.5;color:#d7dde8}
 .reframe-box:empty{display:none}
 .reframe-box p{margin:6px 0}
+.reframe-box .rf-theme{margin:0 0 8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.reframe-box .rf-action{margin-top:10px;color:#c7d1df}
+.reframe-box .rf-note{margin-top:10px;font-size:11px;color:var(--muted);line-height:1.45}
 .bridge-stats{display:flex;flex-wrap:wrap;gap:10px}
 .bridge-pill{
   min-width:110px;flex:1;background:#0f1418;border:1px solid var(--line);border-radius:16px;padding:12px 14px

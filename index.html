@@ -184,17 +184,18 @@
       <article class="bd-card" data-m-panel="more">
         <div class="bd-card-head">
           <div>
-            <span class="eyebrow">AI · MIND</span>
-            <h2>認知重構 · 晨間回顧</h2>
+            <span class="eyebrow" id="reframeEyebrow">重構 · 規則建議</span>
+            <h2 id="reframeTitle">認知重構 · 晨間回顧</h2>
+            <p id="reframeLead">根據你寫低嘅一句配對主題模板。唔係 LLM，亦唔係診斷。</p>
           </div>
         </div>
-        <label>而家最掛住嘅一句想法
+        <label id="reframeInputLabel"><span id="reframeInputLabelText">而家最掛住嘅一句想法</span>
           <textarea id="reframeInput" rows="2" placeholder="例如：聽日個 meeting 一定會搞砸…"></textarea>
         </label>
         <div class="bd-actions">
-          <button class="primary-btn" id="runReframe">AI 重構</button>
+          <button class="primary-btn" id="runReframe">重構建議</button>
           <button class="wide-btn" id="morningReviewBtn">晨間回顧</button>
-          <button class="wide-btn" id="openAIFromBD">開 Nexus AI</button>
+          <button class="wide-btn" id="openAIFromBD">開助手</button>
         </div>
         <div id="reframeOutput" class="reframe-box"></div>
         <div id="morningReview" class="reframe-box"></div>
@@ -206,7 +207,7 @@
           <div>
             <span class="eyebrow">NEXUS BRIDGE</span>
             <h2>同畫布同步</h2>
-            <p>Dump 會變成 Ideas 工作區節點；AI 可以幫你整理成計劃</p>
+            <p id="bridgeLead">Dump 會變成枕頭畫布節點；助手可以用規則幫你排位</p>
           </div>
           <button class="primary-btn" id="syncDumpsToCanvas">同步未轉畫布嘅 Dump</button>
         </div>
@@ -273,8 +274,8 @@
     <aside class="ai-panel" id="aiPanel">
       <div class="panel-head">
         <div>
-          <span>AI AGENT</span>
-          <h2>Nexus Copilot</h2>
+          <span id="aiAgentLabel">規則助手</span>
+          <h2 id="aiCopilotTitle">Nexus Helper</h2>
         </div>
         <button id="closeAI">×</button>
       </div>
@@ -288,7 +289,7 @@
       <div class="ai-context" id="aiContext">
         <span>CANVAS CONTEXT</span>
         <strong id="aiContextCount">0 nodes selected</strong>
-        <p>Agent 可讀取畫布、Dump 同睡眠紀錄。</p>
+        <p id="aiContextHint">讀畫布、Dump、睡眠紀錄，用規則回覆。唔係大型語言模型。</p>
       </div>
       <div class="ai-chat" id="aiChat"></div>
       <div class="ai-suggestions">
