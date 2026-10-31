@@ -115,6 +115,25 @@
 .bridge-pill b{display:block;font-size:22px;margin-bottom:4px}
 .bridge-pill span{font-size:11px;color:var(--muted)}
 
+.tonight-card{padding-bottom:14px}
+.tonight-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.tonight-step{
+  min-height:56px;border:1px solid var(--line);border-radius:14px;padding:8px 10px;
+  background:#0f1418;color:#aeb6c3;font-size:12px;line-height:1.35
+}
+.tonight-step b{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#7f8998;margin-bottom:4px}
+.tonight-step.active{border-color:rgba(139,124,255,.45);color:#fff;background:rgba(139,124,255,.12)}
+.tonight-step.done{border-color:rgba(104,225,209,.28);color:#c7d1df}
+.tonight-step.done b{color:#68e1d1}
+.tonight-actions{margin-top:12px}
+.tonight-restore{
+  display:none;width:100%;border:1px dashed var(--line);background:#12171d;color:#c7d1df;
+  border-radius:14px;padding:10px 12px;min-height:44px;font-size:13px
+}
+.tonight-card.is-hidden,#tonightRestore[hidden]{display:none!important}
+#tonightRestore:not([hidden]){display:block}
+.tonight-note{margin:8px 0 0;font-size:11px;color:var(--muted);line-height:1.4}
+
 .workspace-switcher.horizontal{flex-direction:row;gap:4px}
 .workspace-switcher.horizontal button{width:auto;height:30px;padding:0 10px;font-size:11px;border-radius:9px;border:1px solid transparent;background:transparent;color:#7f8998}
 .workspace-switcher.horizontal button.active{background:#1a1f27;color:#fff;border-color:var(--line)}
@@ -205,9 +224,12 @@ button,input,textarea,select{font-size:16px} /* prevent iOS zoom on focus */
   .countdown-btns .wide-btn,.countdown-btns .primary-btn{flex:1 1 calc(50% - 8px);min-width:42%}
 
   /* Mobile tab panel filtering inside braindump */
-  .app-shell[data-mobile-tab="dump"] .braindump-view [data-m-panel]:not([data-m-panel="dump"]){display:none}
-  .app-shell[data-mobile-tab="sleep"] .braindump-view [data-m-panel]:not([data-m-panel="sleep"]){display:none}
-  .app-shell[data-mobile-tab="wind"] .braindump-view [data-m-panel]:not([data-m-panel="wind"]){display:none}
+  .app-shell[data-mobile-tab="dump"] .braindump-view [data-m-panel]:not([data-m-panel="dump"]):not([data-m-panel="tonight"]){display:none}
+  .app-shell[data-mobile-tab="sleep"] .braindump-view [data-m-panel]:not([data-m-panel="sleep"]):not([data-m-panel="tonight"]){display:none}
+  .app-shell[data-mobile-tab="wind"] .braindump-view [data-m-panel]:not([data-m-panel="wind"]):not([data-m-panel="tonight"]){display:none}
+  .tonight-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tonight-card{order:-2}
+  #tonightRestore:not([hidden]){order:-2}
   .app-shell[data-mobile-tab="more"] .braindump-view [data-m-panel]:not([data-m-panel="more"]){display:none}
   .app-shell[data-mobile-tab="canvas"] .braindump-view{display:none}
 

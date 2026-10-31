@@ -9,7 +9,7 @@
     ↓
 [Dump] 即時 Brain Dump（標籤 → 儲存 / 聽日 / 畫布）
     ↓
-收工
+收工 · 今晚流程（可 skip）：Dump → 放鬆倒數 → 瞓覺 Checkpoint → Still Awake
     ↓
 [放鬆] 10-3-2-1-0 或彈性 OT 倒數
     ↓

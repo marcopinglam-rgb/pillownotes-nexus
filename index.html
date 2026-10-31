@@ -62,6 +62,20 @@
     </header>
 
     <div class="bd-grid">
+      <article class="bd-card tonight-card bd-span" data-m-panel="tonight" id="tonightCard">
+        <div class="bd-card-head">
+          <div>
+            <span class="eyebrow" id="tonightEyebrow">今晚</span>
+            <h2 id="tonightTitle">收工到瞓着</h2>
+            <p id="tonightLead">四步，每步都可以 skip。跟住做，或者收起。</p>
+          </div>
+          <button type="button" class="ghost-btn" id="tonightDismiss">收起</button>
+        </div>
+        <ol class="tonight-steps" id="tonightSteps"></ol>
+        <div class="bd-actions tonight-actions" id="tonightActions"></div>
+      </article>
+      <button type="button" class="tonight-restore" data-m-panel="tonight" id="tonightRestore" hidden>今晚：Dump → 放鬆 → 瞓</button>
+
       <!-- Hero: Brain Dump -->
       <article class="bd-card bd-hero" data-m-panel="dump">
         <div class="bd-card-head">

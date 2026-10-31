@@ -60,6 +60,7 @@ const i18n={
     "toast.dumpSaved":"Dump saved","toast.dumpCanvas":"Saved and created canvas node","toast.sleepSaved":"Sleep entry saved",
     "rf.eyebrow":"Reframe · rule-based","rf.title":"Cognitive reframe · morning review","rf.lead":"Matches your sentence to a theme template. Not an LLM, not a diagnosis.","rf.inputLabel":"The thought you keep looping","rf.placeholder":"e.g. tomorrow’s meeting is going to go badly…","rf.run":"Suggest reframe","rf.openHelper":"Open helper","rf.thought":"Thought","rf.try":"Try seeing it this way","rf.next":"Next","rf.note":"Rule template — not diagnosis or medical advice.","rf.empty":"Write a thought first","rf.theme.work":"Work stress","rf.theme.social":"Relationships","rf.theme.self":"Self-doubt","rf.theme.body":"Body fatigue","rf.theme.future":"Future anxiety","rf.theme.money":"Money stress","rf.theme.family":"Family pressure","rf.theme.study":"Study stress","rf.theme.general":"Tonight","rf.crisis":"If you feel unsafe or at risk, stop here and contact local emergency services, or the Samaritans Hong Kong 24-hour hotline 2382 0000. This app cannot help in a crisis.",
     "bridge.lead":"Dumps become Pillow canvas nodes. The helper can only rearrange with rules.",
+    "tn.eyebrow":"Tonight","tn.title":"From leftover thoughts to bed","tn.lead":"Four skippable steps. Follow them, or tuck the card away.","tn.dismiss":"Hide","tn.restore":"Tonight: Dump → wind-down → bed","tn.do":"Do this step","tn.skip":"Skip","tn.nextWind":"Go to wind-down","tn.nextBed":"Go to bed checkpoint","tn.nextStill":"I am still awake","tn.done":"Tonight's path is done. Sleep when you can.","tn.dump":"Dump","tn.dumpHint":"Unload what is still looping","tn.wind":"Wind-down","tn.windHint":"Start a countdown or screens-off","tn.bed":"Bed","tn.bedHint":"One-tap bedtime checkpoint","tn.still":"Still awake","tn.stillHint":"Optional. Shift bedtime if you are still up.","tn.step":"Step {n}",
     "toast.bed":"Bedtime checkpoint recorded","toast.wake":"Wakeup checkpoint recorded","toast.stillAwake":"Still Awake noted — previous bed time adjusted",
     "toast.countdownDone":"Countdown finished — time to wind down","toast.synced":"Synced dumps to Pillow canvas","toast.tomorrow":"Parked for tomorrow morning"
   },
@@ -116,6 +117,7 @@ const i18n={
     "toast.dumpSaved":"已儲存 Dump","toast.dumpCanvas":"已儲存並建立畫布節點","toast.sleepSaved":"已儲存睡眠紀錄",
     "rf.eyebrow":"重構 · 規則建議","rf.title":"認知重構 · 晨間回顧","rf.lead":"根據你寫低嘅一句配對主題模板。唔係 LLM，亦唔係診斷。","rf.inputLabel":"而家最掛住嘅一句想法","rf.placeholder":"例如：聽日個 meeting 一定會搞砸…","rf.run":"重構建議","rf.openHelper":"開助手","rf.thought":"原想法","rf.try":"試下咁睇","rf.next":"下一步","rf.note":"規則模板，唔係診斷或醫療建議。","rf.empty":"先寫一句想法","rf.theme.work":"工作壓力","rf.theme.social":"人際關係","rf.theme.self":"自我懷疑","rf.theme.body":"身體疲累","rf.theme.future":"未來焦慮","rf.theme.money":"金錢壓力","rf.theme.family":"家庭壓力","rf.theme.study":"學業壓力","rf.theme.general":"今晚","rf.crisis":"如果你覺得自己好危險，停低，打緊急服務或者撒瑪利亞會 24 小時熱線 2382 0000。呢個 app 處理唔到危機。",
     "bridge.lead":"Dump 會變成枕頭畫布節點；助手淨係可以用規則幫你排位。",
+    "tn.eyebrow":"今晚","tn.title":"收工到瞓着","tn.lead":"四步，每步都可以 skip。跟住做，或者收起。","tn.dismiss":"收起","tn.restore":"今晚：Dump → 放鬆 → 瞓","tn.do":"做呢一步","tn.skip":"Skip","tn.nextWind":"去放鬆倒數","tn.nextBed":"去瞓覺 checkpoint","tn.nextStill":"我仲醒","tn.done":"今晚呢條路做完。得閒就瞓。","tn.dump":"Dump","tn.dumpHint":"倒出仲喺腦入面轉嘅嘢","tn.wind":"放鬆","tn.windHint":"開倒數或者熄螢幕","tn.bed":"瞓","tn.bedHint":"一鍵記錄開始瞓","tn.still":"仲醒","tn.stillHint":"可選。如果仲醒，將瞓覺時間移後。","tn.step":"第 {n} 步",
     "toast.bed":"已記錄瞓覺 Checkpoint","toast.wake":"已記錄起身 Checkpoint","toast.stillAwake":"已記錄 Still Awake — 已調整上次瞓覺時間",
     "toast.countdownDone":"倒數完 — 係時候放鬆","toast.synced":"已同步 Dump 到枕頭畫布","toast.tomorrow":"已留待聽日朝早"
   }
@@ -147,6 +149,12 @@ function applyI18n(){
   if($("#aiCopilotTitle"))$("#aiCopilotTitle").textContent=t("ai.copilot");
   if($("#aiContextHint"))$("#aiContextHint").textContent=t("ai.contextHint");
   if($("#bridgeLead"))$("#bridgeLead").textContent=t("bridge.lead");
+  if($("#tonightEyebrow"))$("#tonightEyebrow").textContent=t("tn.eyebrow");
+  if($("#tonightTitle"))$("#tonightTitle").textContent=t("tn.title");
+  if($("#tonightLead"))$("#tonightLead").textContent=t("tn.lead");
+  if($("#tonightDismiss"))$("#tonightDismiss").textContent=t("tn.dismiss");
+  if($("#tonightRestore"))$("#tonightRestore").textContent=t("tn.restore");
+  renderTonight();
   updateAIContext();
   renderBrainDump();
 }
@@ -188,6 +196,7 @@ const defaults={
     protocols:[],
     pendingTomorrow:[],
     reframeUsed:[],
+    tonight:null,
     settings:{flexCountdownMinutes:30}
   }
 };
@@ -212,6 +221,7 @@ function load(){
     if(s.appMode==="bringdown")s.appMode="braindump";
     if(!s.appMode)s.appMode=s.settings.defaultHome||"braindump";
     if(!Array.isArray(s.pillownotes.reframeUsed))s.pillownotes.reframeUsed=[];
+    if(!s.pillownotes.tonight||typeof s.pillownotes.tonight!=="object")s.pillownotes.tonight=null;
     // migrate old dumps shape
     s.pillownotes.dumps=(s.pillownotes.dumps||[]).map(d=>({
       id:d.id||uid(),
@@ -490,6 +500,7 @@ function addDump({text,toCanvas=false,forTomorrow=false,source="text"}){
   if(forTomorrow)state.pillownotes.pendingTomorrow.unshift({id:item.id,text,createdAt:item.createdAt});
   $("#pillowDump").value="";
   activeTags.clear();$$("#worryTags .tag").forEach(x=>x.classList.remove("active"));
+  markTonight("dump");
   save("hist.pillow");
   renderBrainDump();
   return item;
@@ -777,6 +788,7 @@ $("#bedCheckpoint").onclick=()=>{
   state.pillownotes.checkpoints.unshift({type:"bed",time:isoNow()});
   // auto fill sleep start
   const d=new Date();$("#sleepStart").value=String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+  markTonight("bed");
   save("hist.pillow");toast(t("toast.bed"));renderBrainDump();
 };
 $("#wakeCheckpoint").onclick=()=>{
@@ -812,6 +824,7 @@ $("#stillAwakeBtn").onclick=()=>{
   }
   state.pillownotes.checkpoints.unshift({type:"bed",time:nowIso,stillAwake:true});
   const d=new Date();$("#sleepStart").value=String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+  markTonight("still");
   save("hist.pillow");toast(t("toast.stillAwake"));renderBrainDump();
 };
 
@@ -825,6 +838,7 @@ $$("[data-protocol]").forEach(b=>b.onclick=()=>{
   const msg=(protocolLabels[lang()]||protocolLabels.en)[p];
   state.pillownotes.protocols.unshift({step:p,time:isoNow()});
   $("#countdownDisplay").textContent=msg;
+  if(p==="1"||p==="0") markTonight("wind");
   if(p==="0")$("#bedCheckpoint").click();
   if(p==="2"){
     // prompt dump work messages
@@ -839,6 +853,7 @@ function startCountdown(mins){
   const end=Date.now()+mins*60000;
   $("#countdownDisplay").textContent=`Countdown: ${mins}m`;
   pillowCountdown={end,mins};
+  markTonight("wind");
   pillowCountdown.timer=setInterval(()=>{
     const rem=Math.max(0,Math.round((end-Date.now())/1000));
     if(rem<=0){
@@ -954,12 +969,98 @@ function renderBridgeStats(){
     <div class="bridge-pill"><b>${cps}</b><span>Checkpoints</span></div>
     <div class="bridge-pill"><b>${avgSleep()?avgSleep().toFixed(1)+"h":"—"}</b><span>${lang()==="zh"?"平均睡眠":"Avg sleep"}</span></div>`;
 }
+const TONIGHT_ORDER=["dump","wind","bed","still"];
+function localDateKey(){
+  const d=new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+function ensureTonight(){
+  const key=localDateKey();
+  let tn=state.pillownotes.tonight;
+  if(!tn||tn.date!==key){
+    tn={date:key,dismissed:false,done:{dump:false,wind:false,bed:false,still:false}};
+    state.pillownotes.tonight=tn;
+  }
+  if(!tn.done) tn.done={dump:false,wind:false,bed:false,still:false};
+  return tn;
+}
+function tonightNextId(tn){
+  return TONIGHT_ORDER.find(id=>!tn.done[id])||null;
+}
+function markTonight(id){
+  if(!TONIGHT_ORDER.includes(id)) return;
+  const tn=ensureTonight();
+  tn.done[id]=true;
+}
+function tonightGo(id){
+  if(id==="dump"){
+    setMobileTab("dump");
+    setTimeout(()=>$("#pillowDump")&&$("#pillowDump").focus(),40);
+  }else if(id==="wind"){
+    setMobileTab("wind");
+  }else{
+    setMobileTab("sleep");
+    if(id==="bed") setTimeout(()=>$("#bedCheckpoint")&&$("#bedCheckpoint").focus(),40);
+    if(id==="still") setTimeout(()=>$("#stillAwakeBtn")&&$("#stillAwakeBtn").focus(),40);
+  }
+}
+function tonightDo(id){
+  tonightGo(id);
+  if(id==="bed") $("#bedCheckpoint").click();
+  if(id==="still") $("#stillAwakeBtn").click();
+}
+function tonightSkip(id){
+  markTonight(id);
+  const next=tonightNextId(ensureTonight());
+  save("hist.pillow");
+  renderTonight();
+  if(next) tonightGo(next);
+}
+function renderTonight(){
+  const card=$("#tonightCard"), restore=$("#tonightRestore");
+  if(!card) return;
+  const tn=ensureTonight();
+  const next=tonightNextId(tn);
+  const hidden=!!tn.dismissed && !!next;
+  card.classList.toggle("is-hidden", hidden);
+  if(restore) restore.hidden=!hidden;
+  $("#tonightSteps").innerHTML=TONIGHT_ORDER.map((id,i)=>{
+    const done=!!tn.done[id];
+    const active=next===id;
+    return `<li class="tonight-step${done?" done":""}${active?" active":""}"><b>${t("tn.step",{n:i+1})}</b>${escape(t("tn."+id))}<div>${escape(t("tn."+id+"Hint"))}</div></li>`;
+  }).join("");
+  const actions=$("#tonightActions");
+  if(!next){
+    actions.innerHTML=`<p class="tonight-note">${escape(t("tn.done"))}</p>`;
+    return;
+  }
+  const goLabel=id=>({dump:t("tn.do"),wind:t("tn.nextWind"),bed:t("tn.nextBed"),still:t("tn.nextStill")}[id]||t("tn.do"));
+  actions.innerHTML=`<button class="primary-btn" id="tonightDo">${escape(goLabel(next))}</button>
+    <button class="wide-btn" id="tonightSkip">${escape(t("tn.skip"))}</button>
+    <p class="tonight-note">${escape(t("tn."+next+"Hint"))}</p>`;
+  $("#tonightDo").onclick=()=>tonightDo(next);
+  $("#tonightSkip").onclick=()=>tonightSkip(next);
+}
+if($("#tonightDismiss")) $("#tonightDismiss").onclick=()=>{
+  const tn=ensureTonight();
+  tn.dismissed=true;
+  save("hist.pillow");
+  renderTonight();
+};
+if($("#tonightRestore")) $("#tonightRestore").onclick=()=>{
+  const tn=ensureTonight();
+  tn.dismissed=false;
+  save("hist.pillow");
+  renderTonight();
+};
+
 function renderBrainDump(){
   renderDumpList();
   renderSleepStats(false);
   renderSleepList();
   renderCheckpoints();
   renderBridgeStats();
+  renderTonight();
 }
 
 /* ========== CANVAS (existing core) ========== */
