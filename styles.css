@@ -391,3 +391,18 @@ button,input,textarea,select{font-size:16px} /* prevent iOS zoom on focus */
 @media (max-width:900px){
   .dump-tag-toolbar{flex-direction:column;align-items:stretch}
 }
+
+/* In-flow install control. Hidden until beforeinstallprompt. Not part of the fixed chrome. */
+.install-pwa{
+  display:flex;align-items:center;justify-content:center;
+  width:100%;max-width:520px;min-height:48px;margin:0 0 12px;
+  border-radius:14px;border:1px solid rgba(139,124,255,.4);
+  background:rgba(139,124,255,.16);color:#e4e0ff;
+  font-weight:600;font-size:15px;letter-spacing:.01em;cursor:pointer;
+}
+.install-pwa:hover{background:rgba(139,124,255,.24)}
+.install-pwa:active{transform:scale(.99)}
+.install-pwa[hidden]{display:none !important}
+@media (display-mode: standalone), (display-mode: fullscreen){
+  .install-pwa{display:none !important}
+}
