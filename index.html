@@ -3,16 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no,maximum-scale=1">
-  <meta name="theme-color" content="#0b0d10" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#0b0d10">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="PillowNotes">
+  <meta name="apple-mobile-web-app-title" content="Nexus">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="format-detection" content="telephone=no">
   <title>PillowNotes</title>
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" href="assets/icon.svg">
-  <link rel="apple-touch-icon" href="assets/icon.svg">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/icon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="assets/icon-apple-180.png" sizes="180x180">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -57,9 +58,9 @@
         <button id="bdToCanvas" class="ghost-btn desktop-only">開畫布</button>
         <button id="bdLangQuick" class="ghost-btn icon-only" title="Language">文</button>
         <button id="bdSettingsQuick" class="ghost-btn icon-only" title="Settings">⚙</button>
-        <button id="installPwaBtn" class="ghost-btn" hidden>加到主畫面</button>
       </div>
     </header>
+    <button type="button" id="installPwaBtn" class="install-pwa" hidden>安裝 Nexus</button>
 
     <div class="bd-grid">
       <article class="bd-card tonight-card bd-span" data-m-panel="tonight" id="tonightCard">

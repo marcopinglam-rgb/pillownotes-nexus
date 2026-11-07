@@ -57,9 +57,9 @@ http://你的IP:8899
 4. 測 tab 切換、鍵盤頂起、safe area
 
 ### 3）加到主畫面（最似 native）
+- **Android Chrome**：網站符合安裝條件後，Brain Dump 頂部會出現「安裝 Nexus」。撳佢會叫起 Chrome 嘅安裝提示。主畫面名稱係 **Nexus**，冷開啟係 standalone（無網址列）。選單入面嘅「安裝應用程式 / 加到主畫面」仍然可以用。
 - **iPhone Safari**：分享 → 加入主畫面  
-- **Android Chrome**：選單 → 安裝應用程式 / 加到主畫面  
-會以全螢幕 standalone 開啟（無網址列）。
+會以全螢幕 standalone 開啟（無網址列）。離線再開仍然係同一個殼；Brain Dump 寫低嘅內容喺 localStorage `nexusOS`。
 
 ### 4）對外臨時連結（唔同網絡）
 用 ngrok / Cloudflare Tunnel / localtunnel 把 8899 露出：

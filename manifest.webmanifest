@@ -1,20 +1,41 @@
 {
-  "name": "PillowNotes — Brain Dump",
-  "short_name": "PillowNotes",
+  "id": "/",
+  "name": "Nexus",
+  "short_name": "Nexus",
   "description": "即時 Brain Dump + 睡眠節奏，幫香港都市人卸低認知負荷",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#0b0d10",
   "theme_color": "#0b0d10",
   "lang": "zh-Hant",
+  "prefer_related_applications": false,
+  "categories": ["health", "lifestyle", "productivity"],
   "icons": [
     {
-      "src": "assets/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

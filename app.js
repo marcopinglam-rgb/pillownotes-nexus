@@ -62,7 +62,8 @@ const i18n={
     "bridge.lead":"Dumps become Pillow canvas nodes. The helper can only rearrange with rules.",
     "tn.eyebrow":"Tonight","tn.title":"From leftover thoughts to bed","tn.lead":"Four skippable steps. Follow them, or tuck the card away.","tn.dismiss":"Hide","tn.restore":"Tonight: Dump → wind-down → bed","tn.do":"Do this step","tn.skip":"Skip","tn.nextWind":"Go to wind-down","tn.nextBed":"Go to bed checkpoint","tn.nextStill":"I am still awake","tn.done":"Tonight's path is done. Sleep when you can.","tn.dump":"Dump","tn.dumpHint":"Unload what is still looping","tn.wind":"Wind-down","tn.windHint":"Start a countdown or screens-off","tn.bed":"Bed","tn.bedHint":"One-tap bedtime checkpoint","tn.still":"Still awake","tn.stillHint":"Optional. Shift bedtime if you are still up.","tn.step":"Step {n}",
     "toast.bed":"Bedtime checkpoint recorded","toast.wake":"Wakeup checkpoint recorded","toast.stillAwake":"Still Awake noted — previous bed time adjusted",
-    "toast.countdownDone":"Countdown finished — time to wind down","toast.synced":"Synced dumps to Pillow canvas","toast.tomorrow":"Parked for tomorrow morning"
+    "toast.countdownDone":"Countdown finished — time to wind down","toast.synced":"Synced dumps to Pillow canvas","toast.tomorrow":"Parked for tomorrow morning",
+    "pwa.install":"Install Nexus","pwa.installMenu":"Use the Chrome menu to install Nexus","pwa.installed":"Nexus was added to your home screen"
   },
   zh:{
     "app.title":"NEXUS — PillowNotes",
@@ -119,7 +120,8 @@ const i18n={
     "bridge.lead":"Dump 會變成枕頭畫布節點；助手淨係可以用規則幫你排位。",
     "tn.eyebrow":"今晚","tn.title":"收工到瞓着","tn.lead":"四步，每步都可以 skip。跟住做，或者收起。","tn.dismiss":"收起","tn.restore":"今晚：Dump → 放鬆 → 瞓","tn.do":"做呢一步","tn.skip":"Skip","tn.nextWind":"去放鬆倒數","tn.nextBed":"去瞓覺 checkpoint","tn.nextStill":"我仲醒","tn.done":"今晚呢條路做完。得閒就瞓。","tn.dump":"Dump","tn.dumpHint":"倒出仲喺腦入面轉嘅嘢","tn.wind":"放鬆","tn.windHint":"開倒數或者熄螢幕","tn.bed":"瞓","tn.bedHint":"一鍵記錄開始瞓","tn.still":"仲醒","tn.stillHint":"可選。如果仲醒，將瞓覺時間移後。","tn.step":"第 {n} 步",
     "toast.bed":"已記錄瞓覺 Checkpoint","toast.wake":"已記錄起身 Checkpoint","toast.stillAwake":"已記錄 Still Awake — 已調整上次瞓覺時間",
-    "toast.countdownDone":"倒數完 — 係時候放鬆","toast.synced":"已同步 Dump 到枕頭畫布","toast.tomorrow":"已留待聽日朝早"
+    "toast.countdownDone":"倒數完 — 係時候放鬆","toast.synced":"已同步 Dump 到枕頭畫布","toast.tomorrow":"已留待聽日朝早",
+    "pwa.install":"安裝 Nexus","pwa.installMenu":"用 Chrome 選單安裝 Nexus","pwa.installed":"Nexus 已加到主畫面"
   }
 };
 
@@ -154,6 +156,7 @@ function applyI18n(){
   if($("#tonightLead"))$("#tonightLead").textContent=t("tn.lead");
   if($("#tonightDismiss"))$("#tonightDismiss").textContent=t("tn.dismiss");
   if($("#tonightRestore"))$("#tonightRestore").textContent=t("tn.restore");
+  if($("#installPwaBtn"))$("#installPwaBtn").textContent=t("pwa.install");
   renderTonight();
   updateAIContext();
   renderBrainDump();
@@ -343,13 +346,42 @@ $$(".mtab").forEach(b=>b.onclick=()=>setMobileTab(b.dataset.mobileTab));
 if($("#mAiBtn")) $("#mAiBtn").onclick=()=>openAI();
 if($("#mFitBtn")) $("#mFitBtn").onclick=()=>fitCanvas();
 if($("#mUndoBtn")) $("#mUndoBtn").onclick=()=>undo();
-// PWA install prompt
+// PWA install prompt — shown only after Chrome fires beforeinstallprompt.
 let deferredInstall=null;
-window.addEventListener("beforeinstallprompt", e=>{e.preventDefault();deferredInstall=e;const btn=$("#installPwaBtn");if(btn){btn.hidden=false}});
+function runningStandalone(){
+  return window.matchMedia("(display-mode: standalone)").matches
+    || window.matchMedia("(display-mode: fullscreen)").matches
+    || window.navigator.standalone===true;
+}
+function syncInstallButton(){
+  const btn=$("#installPwaBtn");
+  if(!btn) return;
+  btn.hidden=!(deferredInstall && !runningStandalone());
+}
+window.addEventListener("beforeinstallprompt",(e)=>{
+  e.preventDefault();
+  deferredInstall=e;
+  syncInstallButton();
+});
+window.addEventListener("appinstalled",()=>{
+  deferredInstall=null;
+  syncInstallButton();
+});
 if($("#installPwaBtn")) $("#installPwaBtn").onclick=async()=>{
-  if(!deferredInstall){toast(lang()==="zh"?"用瀏覽器選單「加到主畫面」":"Use browser menu: Add to Home Screen");return}
-  deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;const btn=$("#installPwaBtn");if(btn)btn.hidden=true;
+  if(!deferredInstall){toast(t("pwa.installMenu"));return}
+  const promptEvent=deferredInstall;
+  try{
+    promptEvent.prompt();
+    deferredInstall=null;
+    syncInstallButton();
+    const choice=await promptEvent.userChoice;
+    if(choice && choice.outcome==="accepted") toast(t("pwa.installed"));
+  }catch(err){
+    deferredInstall=null;
+    syncInstallButton();
+  }
 };
+syncInstallButton();
 
 /* ========== BRAIN DUMP / PILLOWNOTES ========== */
 function selectedTags(){return [...activeTags]}
