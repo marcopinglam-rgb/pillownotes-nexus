@@ -39,7 +39,7 @@ Preconditions:
 - `#savePillowDump` stays enabled when the composer is empty. The empty state is the toast plus an unchanged list.
 - Do not assert the clock string in the row. It is formatted in `Asia/Hong_Kong`.
 - Tapping a tag does not clear `#toast`. After the empty save, the toast still reads `未有內容` until the successful save replaces it.
-- A successful save marks tonight step Dump done, so `#tonightDo` changes from `做呢一步` to `去放鬆倒數`. That is one dump, not a second row.
+- A successful save marks tonight step Dump done. On the 今晚 tab, `#tonightDo` changes from `做呢一步` to `去放鬆倒數`. Dump does not show `#tonightDo`. That change is one dump, not a second row.
 - A viewport shot that does not scroll `#dumpList` into view still shows the composer and chip `1 則`. The sentence itself is below the fold.
 - Delete does not set a toast. The list text and `dumps: []` are the proof. `storage.empty` stays false after a delete because tonight state is already stored. Count `dumps`.
 - The delete control's visible label is the English word `Delete`.

@@ -5,7 +5,7 @@ description: "Drive the PillowNotes mobile web app (Brain Dump, sleep checkpoint
 
 # Verify PillowNotes
 
-PillowNotes is a static mobile web app. The primary surface is the phone UI: five bottom tabs (Dump, 睡眠, 放鬆, 畫布, 更多) served from `index.html`. There is no CLI and no API. User data is `localStorage` key `nexusOS` (plus `nexusMobileTab`). Canvas, settings, share/export, and the rule helper are the same page. Voice input and the PWA install prompt are real controls, but this harness does not drive them: headless Chrome has no speech engine, and `beforeinstallprompt` is not a required proof.
+PillowNotes is a static mobile web app. The primary surface is the phone UI: five bottom tabs (Dump, 今晚, 睡眠, 放鬆, 更多) served from `index.html`. Dump is home and does not show the tonight card. Canvas opens from 更多, not from its own tab. There is no CLI and no API. User data is `localStorage` key `nexusOS` (plus `nexusMobileTab`). Canvas, settings, share/export, and the rule helper are the same page. Voice input and the PWA install prompt are real controls, but this harness does not drive them: headless Chrome has no speech engine, and `beforeinstallprompt` is not a required proof.
 
 Read `features/README.md`, then the feature file for the behavior under test. Drive every entry point that file lists. Do not call a different entry point verified.
 
@@ -75,7 +75,7 @@ Write proof under the `evidenceDir` from launch (default `/tmp/pillownotes-verif
 
 - Exercise the on-screen control. Do not set `localStorage` or call app functions from the console to simulate a tap.
 - Capture the action and the result. A toast alone is not enough. Read the list or status the user sees, then `storage` or `reload` for the persisted row.
-- `screenshot` of the Dump tab before scrolling shows the PillowNotes wordmark. For a result that sits below the composer, pass `--selector` so that node is scrolled into view. That shot shows the row, the `1 則` chip, and the Dump tab. The wordmark can sit above the fold, so keep the pre-action shot as well. A viewport shot that does not scroll still shows the tonight card and the composer after a save.
+- `screenshot` of the Dump tab before scrolling shows the PillowNotes wordmark and the composer. It does not show the tonight card or the restore chip. For a result that sits below the composer, pass `--selector` so that node is scrolled into view. That shot shows the row, the `1 則` chip, and the Dump tab. The wordmark can sit above the fold, so keep the pre-action shot as well. A viewport shot that does not scroll still shows the composer after a save, and still does not show the tonight card.
 - `aria` writes the accessibility tree. The saved dump text has to appear in that file.
 - Default canvas nodes such as `CORE IDEA` ship with an empty profile. They are not dumps. After any `save()`, `storage.empty` becomes false even when `dumps` is `[]`, because the key holds tonight state and the default canvas. Count `dumps`, do not treat a present key as a saved dump.
 - `storage` is the side-effect check for dumps, checkpoints, and protocol steps. Reloading the page is the second user-facing view.

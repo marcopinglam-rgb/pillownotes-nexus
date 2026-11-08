@@ -10,7 +10,7 @@ const i18n={
   en:{
     "app.title":"NEXUS — PillowNotes",
     "bd.greeting":"Brain Dump",
-    "bd.subtitle":"Unload what's on your mind before sleep.",
+    "bd.subtitle":"",
     "ws.main":"Main","ws.ideas":"Ideas","ws.research":"Research","ws.pillow":"Pillow",
     "wsTitle.main":"NEXUS / MAIN CANVAS","wsTitle.ideas":"NEXUS / IDEAS","wsTitle.research":"NEXUS / RESEARCH","wsTitle.pillow":"NEXUS / PILLOW",
     "tool.select":"Select (V)","tool.hand":"Hand (H)","tool.note":"Note (N)","tool.shape":"Shape (S)","tool.text":"Text (T)","tool.connect":"Connect (C)","tool.frame":"Frame (F)",
@@ -55,7 +55,7 @@ const i18n={
     "toast.nothingUndo":"Nothing to undo","toast.nothingRedo":"Nothing to redo","toast.undone":"Undone","toast.redone":"Redone",
     "toast.selectTwo":"Select at least 2 nodes","toast.selectConnect":"Select another node to connect","toast.shareCopied":"Share code copied",
     "toast.imported":"Workspace imported","toast.invalidFile":"Invalid file","confirm.reset":"Reset entire workspace?",
-    "dump.suggestTags":"Suggest tags","dump.tagHint":"Pick a worry source, or tap Suggest tags — you can edit after.",
+    "dump.placeholder":"What's on your mind?","dump.suggestTags":"Suggest tags","dump.tagHint":"",
     "toast.dumpEmpty":"Write a dump first","toast.dumpNoTags":"No matching tags — pick manually","toast.dumpTags":"Suggested: {tags} (editable)",
     "toast.dumpSaved":"Dump saved","toast.dumpCanvas":"Saved and created canvas node","toast.sleepSaved":"Sleep entry saved",
     "rf.eyebrow":"Reframe · rule-based","rf.title":"Cognitive reframe · morning review","rf.lead":"Matches your sentence to a theme template. Not an LLM, not a diagnosis.","rf.inputLabel":"The thought you keep looping","rf.placeholder":"e.g. tomorrow’s meeting is going to go badly…","rf.run":"Suggest reframe","rf.openHelper":"Open helper","rf.thought":"Thought","rf.try":"Try seeing it this way","rf.next":"Next","rf.note":"Rule template — not diagnosis or medical advice.","rf.empty":"Write a thought first","rf.theme.work":"Work stress","rf.theme.social":"Relationships","rf.theme.self":"Self-doubt","rf.theme.body":"Body fatigue","rf.theme.future":"Future anxiety","rf.theme.money":"Money stress","rf.theme.family":"Family pressure","rf.theme.study":"Study stress","rf.theme.general":"Tonight","rf.crisis":"If you feel unsafe or at risk, stop here and contact local emergency services, or the Samaritans Hong Kong 24-hour hotline 2382 0000. This app cannot help in a crisis.",
@@ -68,7 +68,7 @@ const i18n={
   zh:{
     "app.title":"NEXUS — PillowNotes",
     "bd.greeting":"Brain Dump",
-    "bd.subtitle":"卸低腦入面嘅嘢，先至瞓得着",
+    "bd.subtitle":"",
     "ws.main":"主畫布","ws.ideas":"靈感","ws.research":"研究","ws.pillow":"枕頭",
     "wsTitle.main":"NEXUS / 主畫布","wsTitle.ideas":"NEXUS / 靈感","wsTitle.research":"NEXUS / 研究","wsTitle.pillow":"NEXUS / 枕頭區",
     "tool.select":"選取 (V)","tool.hand":"手掌 (H)","tool.note":"筆記 (N)","tool.shape":"卡片 (S)","tool.text":"文字 (T)","tool.connect":"連接 (C)","tool.frame":"框架 (F)",
@@ -113,7 +113,7 @@ const i18n={
     "toast.nothingUndo":"沒有可復原的動作","toast.nothingRedo":"沒有可重做的動作","toast.undone":"已復原","toast.redone":"已重做",
     "toast.selectTwo":"請至少選取 2 個節點","toast.selectConnect":"請選取另一個節點以連接","toast.shareCopied":"已複製分享碼",
     "toast.imported":"已匯入工作空間","toast.invalidFile":"無效的檔案","confirm.reset":"確定要重設整個工作空間嗎？",
-    "dump.suggestTags":"建議標籤","dump.tagHint":"揀煩惱來源，或者撳建議標籤（可再人手改）",
+    "dump.placeholder":"而家腦入面有咩？","dump.suggestTags":"建議標籤","dump.tagHint":"",
     "toast.dumpEmpty":"先寫一句 dump","toast.dumpNoTags":"未搵到對應標籤，可人手揀","toast.dumpTags":"建議咗：{tags}（可再改）",
     "toast.dumpSaved":"已儲存 Dump","toast.dumpCanvas":"已儲存並建立畫布節點","toast.sleepSaved":"已儲存睡眠紀錄",
     "rf.eyebrow":"重構 · 規則建議","rf.title":"認知重構 · 晨間回顧","rf.lead":"根據你寫低嘅一句配對主題模板。唔係 LLM，亦唔係診斷。","rf.inputLabel":"而家最掛住嘅一句想法","rf.placeholder":"例如：聽日個 meeting 一定會搞砸…","rf.run":"重構建議","rf.openHelper":"開助手","rf.thought":"原想法","rf.try":"試下咁睇","rf.next":"下一步","rf.note":"規則模板，唔係診斷或醫療建議。","rf.empty":"先寫一句想法","rf.theme.work":"工作壓力","rf.theme.social":"人際關係","rf.theme.self":"自我懷疑","rf.theme.body":"身體疲累","rf.theme.future":"未來焦慮","rf.theme.money":"金錢壓力","rf.theme.family":"家庭壓力","rf.theme.study":"學業壓力","rf.theme.general":"今晚","rf.crisis":"如果你覺得自己好危險，停低，打緊急服務或者撒瑪利亞會 24 小時熱線 2382 0000。呢個 app 處理唔到危機。",
@@ -130,14 +130,13 @@ function t(key,vars={}){let s=(i18n[lang()]||i18n.zh)[key]||i18n.en[key]||key;Ob
 function applyI18n(){
   document.documentElement.lang=lang()==="zh"?"zh-Hant":"en";
   document.title=t("app.title");
-  $("#bdGreeting").textContent=t("bd.greeting");
-  $("#bdSubtitle").textContent=t("bd.subtitle");
+  syncTabHeader(state.mobileTab||"dump");
   $$("[data-workspace]").forEach(b=>{const k="ws."+b.dataset.workspace;if(i18n.en[k])b.textContent=t(k)});
   $("#toolHint").textContent=t("toolMode."+tool);
   if($("#langSelect"))$("#langSelect").value=lang();
   if($("#defaultHomeSelect"))$("#defaultHomeSelect").value=state.settings.defaultHome||"braindump";
   if($("#morningPromptToggle"))$("#morningPromptToggle").checked=!!state.settings.morningPrompt;
-  if($("#dumpTagHint"))$("#dumpTagHint").textContent=t("dump.tagHint");
+  if($("#pillowDump"))$("#pillowDump").placeholder=t("dump.placeholder");
   if($("#suggestDumpTags"))$("#suggestDumpTags").textContent=t("dump.suggestTags");
   if($("#reframeEyebrow"))$("#reframeEyebrow").textContent=t("rf.eyebrow");
   if($("#reframeTitle"))$("#reframeTitle").textContent=t("rf.title");
@@ -304,19 +303,10 @@ function setAppMode(mode, opts={}){
   if(!opts.silent) save("hist.mode");
 }
 
-function setMobileTab(tab, opts={}){
-  state.mobileTab = tab;
-  const app=$("#app");
-  if(app) app.dataset.mobileTab = tab;
-  $$("[data-mobile-tab]").forEach(b=>{
-    if(b.classList.contains("mtab") || b.hasAttribute("data-mobile-tab")){
-      // only tabbar buttons
-    }
-  });
-  $$(".mtab").forEach(b=>b.classList.toggle("active", b.dataset.mobileTab===tab));
-  // sync header greeting context
+function syncTabHeader(tab){
   const titles = {
-    dump: {zh:["Brain Dump","卸低腦入面嘅嘢，先至瞓得着"], en:["Brain Dump","Unload what's on your mind before sleep."]},
+    dump: {zh:["Brain Dump",""], en:["Brain Dump",""]},
+    tonight: {zh:["今晚",""], en:["Tonight",""]},
     sleep: {zh:["睡眠","Checkpoint + 日記，一鍵跟蹤作息"], en:["Sleep","Checkpoints and journal in one place"]},
     wind: {zh:["放鬆倒數","10-3-2-1-0 · 彈性 OT 倒數"], en:["Wind-down","10-3-2-1-0 and flexible OT countdown"]},
     more: {zh:["更多","重構、晨間回顧、畫布同步"], en:["More","Reframe, morning review, canvas bridge"]},
@@ -324,6 +314,13 @@ function setMobileTab(tab, opts={}){
   };
   const pack = (titles[tab]||titles.dump)[lang()==="zh"?"zh":"en"];
   if($("#bdGreeting") && tab!=="canvas"){ $("#bdGreeting").textContent = pack[0]; $("#bdSubtitle").textContent = pack[1]; }
+}
+function setMobileTab(tab, opts={}){
+  state.mobileTab = tab;
+  const app=$("#app");
+  if(app) app.dataset.mobileTab = tab;
+  $$(".mtab").forEach(b=>b.classList.toggle("active", b.dataset.mobileTab===tab));
+  syncTabHeader(tab);
   if(tab==="canvas"){
     if(!opts.skipMode) setAppMode("canvas", {skipTab:true, silent:!!opts.silent});
   }else{
@@ -337,7 +334,9 @@ function setMobileTab(tab, opts={}){
 }
 $$("[data-app-mode]").forEach(b=>b.onclick=()=>setAppMode(b.dataset.appMode));
 $("#homeBtn").onclick=()=>setMobileTab("dump");
+if($("#openTonightDesk")) $("#openTonightDesk").onclick=()=>setMobileTab("tonight");
 if($("#bdToCanvas")) $("#bdToCanvas").onclick=()=>setMobileTab("canvas");
+if($("#openCanvasFromMore")) $("#openCanvasFromMore").onclick=()=>setMobileTab("canvas");
 if($("#backToBrainDump")) $("#backToBrainDump").onclick=()=>setMobileTab("dump");
 if($("#bdLangQuick")) $("#bdLangQuick").onclick=()=>setLang(lang()==="zh"?"en":"zh");
 if($("#bdSettingsQuick")) $("#bdSettingsQuick").onclick=()=>$("#settingsModal").classList.add("open");
@@ -1043,10 +1042,8 @@ function tonightDo(id){
 }
 function tonightSkip(id){
   markTonight(id);
-  const next=tonightNextId(ensureTonight());
   save("hist.pillow");
   renderTonight();
-  if(next) tonightGo(next);
 }
 function renderTonight(){
   const card=$("#tonightCard"), restore=$("#tonightRestore");

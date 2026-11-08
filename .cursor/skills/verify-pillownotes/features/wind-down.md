@@ -11,7 +11,7 @@ Wind-down lets a person tap a 10-3-2-1-0 step and see that step's instruction on
 ## How to get to it (user POV)
 
 - Tap 放鬆 in the bottom bar.
-- On the Dump tab, tap the tonight card when its active step is wind-down (`#tonightDo` reads `去放鬆倒數`). That only switches to this tab. It does not itself record a protocol step.
+- On the 今晚 tab, tap the tonight card when its active step is wind-down (`#tonightDo` reads `去放鬆倒數`). That only switches to this tab. It does not itself record a protocol step. The card is not on the Dump tab.
 
 ## Driving it with pn-verify
 

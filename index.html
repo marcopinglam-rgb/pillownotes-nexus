@@ -52,9 +52,10 @@
       <div class="bd-brand">
         <span class="bd-pill live"><span class="dot"></span> PillowNotes</span>
         <h1 id="bdGreeting">Brain Dump</h1>
-        <p id="bdSubtitle">卸低腦入面嘅嘢，先至瞓得着</p>
+        <p id="bdSubtitle"></p>
       </div>
       <div class="bd-top-actions">
+        <button id="openTonightDesk" class="ghost-btn desktop-only" type="button">今晚</button>
         <button id="bdToCanvas" class="ghost-btn desktop-only">開畫布</button>
         <button id="bdLangQuick" class="ghost-btn icon-only" title="Language">文</button>
         <button id="bdSettingsQuick" class="ghost-btn icon-only" title="Settings">⚙</button>
@@ -63,32 +64,13 @@
     <button type="button" id="installPwaBtn" class="install-pwa" hidden>安裝 Nexus</button>
 
     <div class="bd-grid">
-      <article class="bd-card tonight-card bd-span" data-m-panel="tonight" id="tonightCard">
-        <div class="bd-card-head">
-          <div>
-            <span class="eyebrow" id="tonightEyebrow">今晚</span>
-            <h2 id="tonightTitle">收工到瞓着</h2>
-            <p id="tonightLead">四步，每步都可以 skip。跟住做，或者收起。</p>
-          </div>
-          <button type="button" class="ghost-btn" id="tonightDismiss">收起</button>
-        </div>
-        <ol class="tonight-steps" id="tonightSteps"></ol>
-        <div class="bd-actions tonight-actions" id="tonightActions"></div>
-      </article>
-      <button type="button" class="tonight-restore" data-m-panel="tonight" id="tonightRestore" hidden>今晚：Dump → 放鬆 → 瞓</button>
-
-      <!-- Hero: Brain Dump -->
+      <!-- Hero: Brain Dump (home first paint) -->
       <article class="bd-card bd-hero" data-m-panel="dump">
         <div class="bd-card-head">
-          <div>
-            <span class="eyebrow">PRIMARY · BRAIN DUMP</span>
-            <h2>Brain Dump</h2>
-            <p>即時倒出靈感、工作訊息、煩惱 — 唔使等到瞓前先處理</p>
-          </div>
           <span class="bd-chip" id="dumpCountChip">0 則</span>
         </div>
         <div class="dump-input-wrap">
-          <textarea id="pillowDump" rows="5" placeholder="而家腦入面有咩？工作訊息、靈感、煩惱…直接寫低。亦可撳 🎤 語音輸入。"></textarea>
+          <textarea id="pillowDump" rows="5" placeholder="而家腦入面有咩？"></textarea>
           <div class="dump-voice-bar">
             <button type="button" class="voice-btn" id="voiceDumpBtn" aria-pressed="false" title="語音輸入">
               <span class="voice-dot" aria-hidden="true"></span>
@@ -99,7 +81,6 @@
         </div>
 
         <div class="dump-tag-toolbar">
-          <p class="dump-tag-hint" id="dumpTagHint">揀煩惱來源，或者撳建議標籤（可再人手改）</p>
           <button type="button" class="wide-btn" id="suggestDumpTags">建議標籤</button>
         </div>
         <div class="tag-row" id="worryTags">
@@ -118,6 +99,20 @@
         </div>
         <div class="dump-list" id="dumpList"></div>
       </article>
+
+      <article class="bd-card tonight-card bd-span" data-m-panel="tonight" id="tonightCard">
+        <div class="bd-card-head">
+          <div>
+            <span class="eyebrow" id="tonightEyebrow">今晚</span>
+            <h2 id="tonightTitle">收工到瞓着</h2>
+            <p id="tonightLead">四步，每步都可以 skip。跟住做，或者收起。</p>
+          </div>
+          <button type="button" class="ghost-btn" id="tonightDismiss">收起</button>
+        </div>
+        <ol class="tonight-steps" id="tonightSteps"></ol>
+        <div class="bd-actions tonight-actions" id="tonightActions"></div>
+      </article>
+      <button type="button" class="tonight-restore" data-m-panel="tonight" id="tonightRestore" hidden>今晚：Dump → 放鬆 → 瞓</button>
 
       <!-- Right column stack -->
       <div class="bd-side">
@@ -226,6 +221,9 @@
           </div>
           <button class="primary-btn" id="syncDumpsToCanvas">同步未轉畫布嘅 Dump</button>
         </div>
+        <div class="bd-actions">
+          <button class="wide-btn" id="openCanvasFromMore" type="button">開畫布</button>
+        </div>
         <div class="bridge-stats" id="bridgeStats"></div>
       </article>
     </div>
@@ -324,14 +322,14 @@
     <button class="mtab active" data-mobile-tab="dump" type="button">
       <span class="mtab-ico">💭</span><span class="mtab-label">Dump</span>
     </button>
+    <button class="mtab" data-mobile-tab="tonight" type="button">
+      <span class="mtab-ico">🌙</span><span class="mtab-label">今晚</span>
+    </button>
     <button class="mtab" data-mobile-tab="sleep" type="button">
       <span class="mtab-ico">😴</span><span class="mtab-label">睡眠</span>
     </button>
     <button class="mtab" data-mobile-tab="wind" type="button">
       <span class="mtab-ico">⏱</span><span class="mtab-label">放鬆</span>
-    </button>
-    <button class="mtab" data-mobile-tab="canvas" type="button">
-      <span class="mtab-ico">◈</span><span class="mtab-label">畫布</span>
     </button>
     <button class="mtab" data-mobile-tab="more" type="button">
       <span class="mtab-ico">⋯</span><span class="mtab-label">更多</span>
