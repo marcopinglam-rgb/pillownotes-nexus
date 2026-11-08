@@ -1,6 +1,6 @@
 /* PillowNotes PWA — network-first so UI updates land quickly after deploy.
    Bump CACHE whenever a precached asset changes. */
-const CACHE = "pillownotes-v7";
+const CACHE = "pillownotes-v8";
 const PRECACHE = [
   "/",
   "/index.html",

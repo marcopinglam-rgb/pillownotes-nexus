@@ -11,7 +11,7 @@ Sleep checkpoint lets a person record bedtime from the sleep tab and read that c
 ## How to get to it (user POV)
 
 - Tap 睡眠 in the bottom bar.
-- On the Dump tab, use the tonight card's bedtime step once Dump and wind-down are done. That card presses the same `#bedCheckpoint` control. Verify it only when the bedtime step is the active step. Do not skip ahead by saving a dump just to reach it.
+- On the 今晚 tab, use the tonight card's bedtime step once Dump and wind-down are done. That card presses the same `#bedCheckpoint` control. Verify it only when the bedtime step is the active step. Do not skip ahead by saving a dump just to reach it. The card is not on the Dump tab.
 
 ## Driving it with pn-verify
 

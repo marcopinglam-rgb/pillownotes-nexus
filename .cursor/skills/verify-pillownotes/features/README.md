@@ -42,7 +42,7 @@ Keep implementation details out of the map. Name only user paths, stable handles
 ## Features
 
 - [Save a brain dump](./save-dump.md) covers the empty save, a tagged save, reload, and delete.
-- [Mobile tabs](./mobile-tabs.md) covers the five bottom tabs and which panel each one shows.
+- [Mobile tabs](./mobile-tabs.md) covers the five bottom tabs (Dump, 今晚, 睡眠, 放鬆, 更多) and the canvas entry under 更多. Dump must not show the tonight card.
 - [Sleep checkpoint](./sleep-checkpoint.md) covers bedtime and the checkpoint line the user reads back.
 - [Wind-down](./wind-down.md) covers the 10-3-2-1-0 protocol buttons.
 - [Tonight path](./tonight.md) covers the four-step card, skip, and hide.
